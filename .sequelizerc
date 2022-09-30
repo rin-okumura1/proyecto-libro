@@ -1,0 +1,26 @@
+// .sequelizerc
+
+const path = require('path');
+
+module.exports = {
+  'config': path.resolve('config', 'database.json'),
+  'models-path': path.resolve('db', 'models'),
+  'seeders-path': path.resolve('db', 'seeders'),
+  'migrations-path': path.resolve('db', 'migrations')
+};
+
+
+
+ 
+/*
+npx sequelize-cli model:generate --name Users --attributes Dni:integer,Name:string,Surname:string,email:string,Password:string
+
+
+"dni":123456,
+  "name": "caro ",
+  "surname":"pacheco",
+  "email_address" : "lalala@correo.com",
+  "password":123554,
+  "qualification":5,
+  "status2":"active"
+  */
