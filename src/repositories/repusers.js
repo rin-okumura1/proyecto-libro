@@ -1,44 +1,14 @@
-function getById(id){
-    return usersList.find(i=>i.name==id)
+async function getAll(){
+  return await Users.findAll()
+  }
+  
+async function getById(id){
+    return await users.findById(id)
     }
-    const usersList=[ {
-        "dni":123456,
-        "name":"caro",
-        "surname":"pacheco",
-        "email_address" : "lalala@correo.com",
-        "password":123554,
-        "qualification":5,
-        "status2":"active"
-      },{
-          
-        "dni":123456,
-        "name": "david",
-        "surname":"pacheco",
-        "email_address" : "lalala@correo.com",
-        "password":123554,
-        "qualification":5,
-        "status2":"active"
-      },{
-          
-        "dni":123456,
-        "name": "ago",
-        "surname":"pacheco",
-        "email_address" : "lalala@correo.com",
-        "password":123554,
-        "qualification":5,
-        "status2":"active"
-      },
-      {
-          
-        "dni":123456,
-        "name": "nelson",
-        "surname":"pacheco",
-        "email_address" : "lalala@correo.com",
-        "password":123554,
-        "qualification":5,
-        "status2":"active"
-      }]
+    const {Users}=require("D:\ort\2 anio\tp2\proyecto libros\db\models")
+const users = require("../../db/models/users")
     
     module.exports={
-        getById
+        getById,
+        getAll
     }
