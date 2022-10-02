@@ -1,0 +1,8 @@
+const path = require('path');
+
+module.exports = {
+  'config': path.resolve('config', 'database.json'), //indica donde se ubica la config donde el ORM se va aconectar con la DB, dentro de una carpeta llamada "config" con un archivo adatabase.json
+  'models-path': path.resolve('db', 'models'), //es la ubicacion dentro d ela carpeta db, dentro de la carpeta models
+  'seeders-path': path.resolve('db', 'seeders'),
+  'migrations-path': path.resolve('db', 'migrations')
+};
