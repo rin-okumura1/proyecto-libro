@@ -8,9 +8,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      dni: {
-        type: Sequelize.INTEGER
-      },
       name: {
         type: Sequelize.STRING
       },
@@ -22,6 +19,12 @@ module.exports = {
       },
       password: {
         type: Sequelize.STRING
+      },
+      score: {
+        type: Sequelize.INTEGER
+      },
+      statusId: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
