@@ -11,8 +11,8 @@ router.get('/',async function(req, res, next) {
 
 router.get('/:id',async function(req, res, next) {
   let user=await repositories.getById(req.params.id)
-  
-    return res.json(user);
+  if (user!=null)return res.json(user);
  
+  else res.status(404).end();
 });
 module.exports = router;
