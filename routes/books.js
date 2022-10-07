@@ -14,7 +14,6 @@ router.get('/:bookId', async (req, res) => {
     
     if(bookFound) {
         return res.json(bookFound);
-        //console.log(bookFound);
     }
 
     res.status(404).end();
@@ -33,7 +32,6 @@ router.get('/:bookId', async (req, res) => {
     }
     //res.status(200).json({operationId, authors, titles, categories, languages});
 }); */
-
 
 
 module.exports = router;
