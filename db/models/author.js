@@ -14,7 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Author.init({
-    name: DataTypes.STRING
+    name: {
+      type: DataTypes.STRING(100),
+      allowNull: false
+    }
   }, {
     sequelize,
     modelName: 'Author',
