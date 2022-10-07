@@ -9,32 +9,32 @@ module.exports = {
     await queryInterface.bulkInsert("Authors",
       [
         {
-          name: "Gustave Flaubert",
+          name: "Fiódor Dostoievski",
           'createdAt': "2022-01-01 22:58:01",
           'updatedAt': "2022-01-01 22:58:01"
         },
         {
-          name: "Gabriel García Márquez",
+          name: "Hans Christian Andersen",
           'createdAt': "2022-01-01 22:58:01",
           'updatedAt': "2022-01-01 22:58:01"
         },
         {
-          name: "Nikolai Gogol",
+          name: "Dante Alighieri",
           'createdAt': "2022-01-01 22:58:01",
           'updatedAt': "2022-01-01 22:58:01"
         },
         {
-          name: "Franz Kafka",
+          name: "Jane Austen",
           'createdAt': "2022-01-01 22:58:01",
           'updatedAt': "2022-01-01 22:58:01"
         },
         {
-          name: "Elsa Morante",
+          name: "Astrid Lindgren",
           'createdAt': "2022-01-01 22:58:01",
           'updatedAt': "2022-01-01 22:58:01"
         },
         {
-          name: "Fernando Pessoa",
+          name: "Emily Brontë",
           'createdAt': "2022-01-01 22:58:01",
           'updatedAt': "2022-01-01 22:58:01"
         },

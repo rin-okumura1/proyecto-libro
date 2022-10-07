@@ -4,44 +4,109 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.bulkInsert('Books', [
       {
-         'authorId': 1,
-         'editionYear': 2018,
-         'title': 'Personas Decentes',
-         'categoryId': 1,
-         'languageId': 1,
-         'synopsis':
-         'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. masa aeneana. Cum sociis natoque penatibus et',
-         'available': 'DISPONIBLE',
-         'userId': 1,
-         'createdAt': "2022-01-01 22:58:01",
-         'updatedAt': "2022-01-01 22:58:01"
+        'authorId': 1,
+        'editionYear': 2018,
+        'title': 'Crimen y castigo',
+        'categoryId': 1,
+        'languageId': 1,
+        'synopsis':
+        'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. masa aeneana. Cum sociis natoque penatibus et',
+        'availabilityId': 1,
+        'userId': 1,
+        'createdAt': "2022-01-01 22:58:01",
+        'updatedAt': "2022-01-01 22:58:01"
      },
      {
       'authorId': 2,
       'editionYear': 2017,
-      'title': 'Personas Malas',
+      'title': 'Cuentos infantiles',
       'categoryId': 2,
-      'languageId': 1,
+      'languageId': 2,
       'synopsis':
       'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. masa aeneana. Cum sociis natoque penatibus et',
-      'available': 'DISPONIBLE',
-      'userId': 1,
+      'availabilityId': 1,
+      'userId': 3,
       'createdAt': "2022-01-01 22:58:01",
       'updatedAt': "2022-01-01 22:58:01"
     },
     {
       'authorId': 1,
       'editionYear': 2019,
-      'title': 'Personas Buenas',
-      'categoryId': 1,
+      'title': 'El idiota',
+      'categoryId': 3,
+      'languageId': 3,
+      'synopsis':
+      'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. masa aeneana. Cum sociis natoque penatibus et',
+      'availabilityId': 1,
+      'userId': 2,
+      'createdAt': "2022-01-01 22:58:01",
+      'updatedAt': "2022-01-01 22:58:01"
+    },
+    {
+      'authorId': 3,
+      'editionYear': 2019,
+      'title': 'Divina comedia',
+      'categoryId': 4,
       'languageId': 1,
       'synopsis':
       'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. masa aeneana. Cum sociis natoque penatibus et',
-      'available': 'DISPONIBLE',
+      'availabilityId': 1,
+      'userId': 2,
+      'createdAt': "2022-01-01 22:58:01",
+      'updatedAt': "2022-01-01 22:58:01"
+    },
+    {
+      'authorId': 4,
+      'editionYear': 2019,
+      'title': 'Orgullo y prejuicio',
+      'categoryId': 4,
+      'languageId': 2,
+      'synopsis':
+      'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. masa aeneana. Cum sociis natoque penatibus et',
+      'availabilityId': 1,
+      'userId': 5,
+      'createdAt': "2022-01-01 22:58:01",
+      'updatedAt': "2022-01-01 22:58:01"
+    },
+    {
+      'authorId': 6,
+      'editionYear': 2019,
+      'title': 'Cumbres Borrascosas',
+      'categoryId': 6,
+      'languageId': 5,
+      'synopsis':
+      'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. masa aeneana. Cum sociis natoque penatibus et',
+      'availabilityId': 1,
+      'userId': 3,
+      'createdAt': "2022-01-01 22:58:01",
+      'updatedAt': "2022-01-01 22:58:01"
+    },
+    {
+      'authorId': 5,
+      'editionYear': 2019,
+      'title': 'Pippi Calzaslargas',
+      'categoryId': 7,
+      'languageId': 3,
+      'synopsis':
+      'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. masa aeneana. Cum sociis natoque penatibus et',
+      'availabilityId': 1,
       'userId': 1,
       'createdAt': "2022-01-01 22:58:01",
       'updatedAt': "2022-01-01 22:58:01"
-  },
+    },
+    {
+      'authorId': 7,
+      'editionYear': 2019,
+      'title': 'La señora Dalloway',
+      'categoryId': 6,
+      'languageId': 2,
+      'synopsis':
+      'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. masa aeneana. Cum sociis natoque penatibus et',
+      'availabilityId': 1,
+      'userId': 4,
+      'createdAt': "2022-01-01 22:58:01",
+      'updatedAt': "2022-01-01 22:58:01"
+    },
   ], {});
    
   },
