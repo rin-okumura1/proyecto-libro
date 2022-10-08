@@ -14,8 +14,11 @@ module.exports = (sequelize, DataTypes) => {
       // Un Book pertenece a un Author
       Book.belongsTo(models.author);
 
-      //Un Book pertenece a una Category
+      // Un Book pertenece a una Category
       Book.belongsTo(models.category);
+
+      // Un Book sólo pertenece a una Availability
+      Book.belongsTo(models.availability);
     }
   }
   Book.init({
