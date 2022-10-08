@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+//const author = require('./author');
 module.exports = (sequelize, DataTypes) => {
   class Book extends Model {
     /**
@@ -10,7 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      // Un Book pertenece a un Author
+      Book.belongsTo(models.author);
+
+      //Un Book pertenece a una Category
+      Book.belongsTo(models.category);
     }
   }
   Book.init({
@@ -45,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    modelName: 'Book',
+    modelName: 'book',
     tableName: 'Books'
   });
   return Book;

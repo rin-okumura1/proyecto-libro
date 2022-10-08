@@ -5,18 +5,32 @@ const books = require('../src/repositories/books')
 
 //Devuelve todos los registros de Libros almacenados en la DB
 router.get('/', async function (req, res, next) {
-    res.json(await books.getAllBooks());
+
+    await books.getAllBooks()
+    .then((data) => {
+        res.json(data)
+    })
+    .catch((error) => {
+        res.json(error)
+    }) 
+
+    //res.json(await books.getAllBooks());
 });
 
 //Devuelve un libro de acuerdo a su ID
 router.get('/:bookId', async (req, res) => {
-    let bookFound = await books.getBookById(req.params.bookId);
     
-    if(bookFound) {
-        return res.json(bookFound);
-    }
-
-    res.status(404).end();
+    await books.getBookById(req.params.bookId)
+    .then((data) => {
+        if(data) {
+            return res.json(data)
+        }
+        res.status(404).end()
+    })
+    .catch((error) => {
+        res.json(error)
+    })
+    
 });
 
 /* router.get('/', function (req, res, next) {
