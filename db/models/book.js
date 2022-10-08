@@ -11,14 +11,17 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // Un Book pertenece a un Author
+      // Un Book pertenece a un solo Author
       Book.belongsTo(models.author);
 
-      // Un Book pertenece a una Category
+      // Un Book pertenece a una sola Category
       Book.belongsTo(models.category);
 
       // Un Book sólo pertenece a una Availability
       Book.belongsTo(models.availability);
+
+      // Un Book sólo puede pertenecer a un único Language
+      Book.belongsTo(models.language);
     }
   }
   Book.init({

@@ -1,8 +1,8 @@
-const { book, author, category, availability } = require('../../db/models');
+const { book, author, category, availability, language } = require('../../db/models');
 
 const getAllBooks = async () => {
     return await book.findAll({
-        attributes: { exclude: ['authorId', 'categoryId', 'availabilityId']},
+        attributes: { exclude: ['authorId', 'categoryId', 'availabilityId', 'languageId', 'createdAt', 'updatedAt'] },
         include: [
             { 
                 model: author, 
@@ -15,6 +15,10 @@ const getAllBooks = async () => {
             { 
                 model: availability ,
                 attributes: ['id', 'state']
+            },
+            { 
+                model: language ,
+                attributes: ['id', 'language']
             }
          ]
     });
@@ -22,7 +26,7 @@ const getAllBooks = async () => {
 
 const getBookById = async (id) => {
     return await book.findByPk(id, {
-        attributes: { exclude: ['authorId', 'categoryId', 'availabilityId']},
+        attributes: { exclude: ['authorId', 'categoryId', 'availabilityId', 'languageId', 'createdAt', 'updatedAt'] },
         include: [
             { 
                 model: author, 
@@ -35,6 +39,10 @@ const getBookById = async (id) => {
             { 
                 model: availability ,
                 attributes: ['id', 'state']
+            },
+            { 
+                model: language ,
+                attributes: ['id', 'language']
             }
          ]
     });
