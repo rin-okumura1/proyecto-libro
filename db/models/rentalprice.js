@@ -10,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      // Un price de RentalPrice pertenece a un registro de un Book
+      RentalPrice.belongsTo(models.book);
     }
   }
   RentalPrice.init({

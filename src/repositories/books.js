@@ -1,4 +1,4 @@
-const { book, author, category, availability, language } = require('../../db/models');
+const { book, author, category, availability, language, rentalPrice } = require('../../db/models');
 
 const getAllBooks = async () => {
     return await book.findAll({
@@ -19,6 +19,10 @@ const getAllBooks = async () => {
             { 
                 model: language ,
                 attributes: ['id', 'language']
+            },
+            { 
+                model: rentalPrice ,
+                attributes: ['id', 'price']
             }
          ]
     });
@@ -43,6 +47,10 @@ const getBookById = async (id) => {
             { 
                 model: language ,
                 attributes: ['id', 'language']
+            },
+            { 
+                model: rentalPrice ,
+                attributes: ['id', 'price']
             }
          ]
     });

@@ -22,6 +22,9 @@ module.exports = (sequelize, DataTypes) => {
 
       // Un Book sólo puede pertenecer a un único Language
       Book.belongsTo(models.language);
+
+      // Un Book sólo puede tener un registro de price de RentalPrices
+      Book.hasOne(models.rentalPrice);
     }
   }
   Book.init({
