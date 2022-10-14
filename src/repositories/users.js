@@ -1,8 +1,9 @@
 
-const {Users}=require("../../db/models")
+const {Users,Status}=require("../../db/models")
 
 async function getAll(){
-  return await Users.findAll()
+
+  return await Users.findAll({include:[Status]})
   }
   
 async function getById(id){
