@@ -6,13 +6,21 @@ const books = require('../src/repositories/books')
 //Devuelve todos los registros de Libros almacenados en la DB
 router.get('/', async function (req, res, next) {
 
-    await books.getAllBooks()
+    const { title, languageId } = req.query;
+
+    if(title || languageId) {
+        return res.json(await books.getAllBooks({title, languageId}))
+        }
+
+    res.json(await books.getAllBooks())
+    
+    /* await books.getAllBooks()
     .then((data) => {
         res.json(data)
     })
     .catch((error) => {
         res.json(error)
-    }) 
+    })  */
 
     //res.json(await books.getAllBooks());
 });
