@@ -56,6 +56,19 @@ const getBookById = async (id) => {
     });
 };
 
+/* const getBookById = async (id) => {
+    return await book.findByPk(id, {
+        attributes: { exclude: ['authorId', 'categoryId', 'availabilityId', 'languageId', 'createdAt', 'updatedAt'] },
+        include: [author, category]
+    });
+}; */
+
+const saveBook = async () => {
+    return await book.create({
+
+    })
+}
+
 
 module.exports = {
     getBookById,
