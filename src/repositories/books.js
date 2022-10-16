@@ -68,18 +68,8 @@ const getBookById = async (id) => {
     });
 };
 
-const findBooksByTitle = async (authorId) => {
-    return await book.findAll({
-        where: {
-            authorId: {
-                [Op.eq]: authorId
-            }
-        }
-    });
-};
 
 module.exports = {
     getBookById,
     getAllBooks,
-    findBooksByTitle,
 }
