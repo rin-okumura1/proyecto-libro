@@ -3,8 +3,20 @@ var router = express.Router();
 
 const books = require('../src/repositories/books')
 
-//Devuelve todos los registros de Libros almacenados en la DB
+//Devuelve todos los registros de Libros almacenados en la DB, y puede filtrar los resultados encontrados, de acuerdo al Title y Language
 router.get('/', async function (req, res, next) {
+
+    const { title, languageId } = req.query;
+
+    if(title || languageId) {
+        return await books.getAllBooks({title, languageId})
+        .then((data) => {
+            res.json(data)
+        })
+        .catch((error) => {
+            res.json(error)
+        }) 
+        }
 
     await books.getAllBooks()
     .then((data) => {
@@ -13,7 +25,7 @@ router.get('/', async function (req, res, next) {
     .catch((error) => {
         res.json(error)
     }) 
-
+    
 });
 
 //Devuelve un libro de acuerdo a su ID
