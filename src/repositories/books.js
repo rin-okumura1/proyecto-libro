@@ -3,6 +3,7 @@ const { Op } = require('sequelize')
 
 const getAllBooks = async (params = {}) => {
     
+    // Para la búsqueda sin "req.query"
     let query = {
         where: {
 
@@ -29,12 +30,14 @@ const getAllBooks = async (params = {}) => {
         
     }
 
+    // Para la búsqueda cuando se requieren filtrar Books por el título
     if(params.title) {
         query.where.title = {
                 [Op.substring]: params.title
             }
     }
 
+    // Para la búsqueda cuando se requieren filtrar Books por el lenguaje
     if(params.languageId) {
         query.where.languageId = {
             [Op.eq]: params.languageId

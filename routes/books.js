@@ -25,8 +25,7 @@ router.get('/', async function (req, res, next) {
     .catch((error) => {
         res.json(error)
     }) 
-
-    //res.json(await books.getAllBooks());
+    
 });
 
 //Devuelve un libro de acuerdo a su ID
