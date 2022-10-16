@@ -51,11 +51,20 @@ module.exports = (sequelize, DataTypes) => {
     },
     availabilityId : {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      defaultValue: 1
     },
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: "2022-01-01 22:58:01"
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: "2022-01-01 22:58:01"
     }
   }, {
     sequelize,

@@ -56,21 +56,21 @@ const getBookById = async (id) => {
     });
 };
 
-/* const getBookById = async (id) => {
-    return await book.findByPk(id, {
-        attributes: { exclude: ['authorId', 'categoryId', 'availabilityId', 'languageId', 'createdAt', 'updatedAt'] },
-        include: [author, category]
-    });
-}; */
-
-const saveBook = async () => {
+const saveBook = async (authorId, editionYear, title, categoryId, languageId, synopsis, userId) => {
     return await book.create({
-
+        authorId,
+        editionYear,
+        title,
+        categoryId,
+        languageId,
+        synopsis,
+        userId
     })
 }
 
 
 module.exports = {
     getBookById,
-    getAllBooks
+    getAllBooks,
+    saveBook
 }

@@ -32,6 +32,21 @@ router.get('/:bookId', async (req, res) => {
     
 });
 
+router.post('/', async function (req, res, next) {
+
+    let dataNewBook = req.body;
+    const {authorId, editionYear, title, categoryId, languageId, synopsis, userId } = dataNewBook;
+    try {
+        if(dataNewBook) {
+            let savedBook = await books.saveBook(authorId, editionYear, title, categoryId, languageId, synopsis, userId);
+            res.json(savedBook);
+        }
+    }catch(error) {
+        res.status(501).json({message: error});
+    }
+
+});
+
 /* router.get('/', function (req, res, next) {
     const { operationId, authors, titles, categories, languages } = req.query;
     let booksFound;
