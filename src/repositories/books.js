@@ -1,7 +1,13 @@
 const { book, author, category, availability, language, rentalPrice } = require('../../db/models');
+const { Op } = require('sequelize')
 
-const getAllBooks = async () => {
-    return await book.findAll({
+const getAllBooks = async (params = {}) => {
+    
+    // Para la búsqueda sin "req.query"
+    let query = {
+        where: {
+
+        },
         attributes: { exclude: ['authorId', 'categoryId', 'availabilityId', 'languageId', 'createdAt', 'updatedAt'] },
         include: [
             { 
@@ -25,7 +31,24 @@ const getAllBooks = async () => {
                 attributes: ['id', 'price']
             }
          ]
-    });
+        
+    }
+
+    // Para la búsqueda cuando se requieren filtrar Books por el título
+    if(params.title) {
+        query.where.title = {
+                [Op.substring]: params.title
+            }
+    }
+
+    // Para la búsqueda cuando se requieren filtrar Books por el lenguaje
+    if(params.languageId) {
+        query.where.languageId = {
+            [Op.eq]: params.languageId
+        }
+    }
+    
+    return await book.findAll(query);
 };
 
 const getBookById = async (id) => {
@@ -59,5 +82,5 @@ const getBookById = async (id) => {
 
 module.exports = {
     getBookById,
-    getAllBooks
+    getAllBooks,
 }
