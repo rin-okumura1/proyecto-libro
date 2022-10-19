@@ -10,7 +10,9 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      
+      // una penalidad pertenece a un usuario
+      Penalty.belongsTo(models.Users);
     }
   }
   Penalty.init({

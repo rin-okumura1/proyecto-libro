@@ -15,6 +15,9 @@ module.exports = (sequelize, DataTypes) => {
 
       // Un User tiene muchos Books
       User.hasMany(models.book);
+
+      // un user tieene penalidades
+      User.hasOne(models.Penalty);
     }
   }
   User.init({
