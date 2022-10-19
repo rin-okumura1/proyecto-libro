@@ -14,6 +14,7 @@ const getAllBooks = async (params = {}) => {
                 }
             }
         ]
+}
 };
 
 
