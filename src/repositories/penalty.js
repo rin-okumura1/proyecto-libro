@@ -12,20 +12,18 @@ const getAll = async (params = {}) => {
             }
         ]
 }
+return await Penalty.findAll(query);
 };
 
 const getById = async (id) => {
-    return await book.findByPk(id, {
+    return await Penalty.findByPk(id, {
         
         attributes: { exclude: ['id'] },
         include: [
             { 
                 model: Users ,
                 attributes: ['id', 'name', 'surname', 'email'],
-                include: {
-                    model: Status,
-                    attributes: ['id', 'state']
-                }
+            
             }
         ]
 })
