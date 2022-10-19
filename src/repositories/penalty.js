@@ -1,9 +1,23 @@
-const {Penalty, Users,Status} = require ('../../db/models')
-const { Op } = require('sequelize')
+const {Penalty, Users} = require ('../../db/models')
 
-const getAllBooks = async (params = {}) => {
+
+const getAll = async (params = {}) => {
     let query = {
         where: {},
+        attributes: { exclude: ['id'] },
+        include: [
+            { 
+                model: Users ,
+                attributes: ['id', 'name', 'surname', 'email']
+            }
+        ]
+}
+};
+
+const getById = async (id) => {
+    return await book.findByPk(id, {
+        
+        attributes: { exclude: ['id'] },
         include: [
             { 
                 model: Users ,
@@ -14,11 +28,8 @@ const getAllBooks = async (params = {}) => {
                 }
             }
         ]
-}
+})
 };
-
-
-
 
 
 
