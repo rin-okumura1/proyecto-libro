@@ -1,11 +1,28 @@
-const {Penalty} = require ('../../db/models')
+const {Penalty, Users,Status} = require ('../../db/models')
+const { Op } = require('sequelize')
 
-async function getById(id){
-    return await Penalty.findByPk(id)
-}
-async function getAll(){
-    return await Penalty.findAll()
-}
+const getAllBooks = async (params = {}) => {
+    let query = {
+        where: {},
+        include: [
+            { 
+                model: Users ,
+                attributes: ['id', 'name', 'surname', 'email'],
+                include: {
+                    model: Status,
+                    attributes: ['id', 'state']
+                }
+            }
+        ]
+};
+
+
+
+
+
+
+
+
 module.exports = {
     getById, 
     getAll,
