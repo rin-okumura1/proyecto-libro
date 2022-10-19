@@ -8,7 +8,7 @@ module.exports = {
         surname: "Pacheco",
         email: "lpacheco@correo.com",
         password: 12345678,
-        score: 1,
+        statusId: 2,
         createdAt: "2022-01-01 22:58:01",
         updatedAt: "2022-01-01 22:58:01",
       },
@@ -18,6 +18,7 @@ module.exports = {
         email: "aschoppe@correo.com",
         password: 12345678,
         score: 1,
+        statusId: 2,
         createdAt: "2022-01-01 22:58:01",
         updatedAt: "2022-01-01 22:58:01",
       },
@@ -26,7 +27,7 @@ module.exports = {
         surname: "Luciano",
         email: "aluciano@correo.com",
         password: 12345678,
-        score: 1,
+        statusId: 2,
         createdAt: "2022-01-01 22:58:01",
         updatedAt: "2022-01-01 22:58:01",
       },
@@ -36,6 +37,7 @@ module.exports = {
         email: "cpaz@correo.com",
         password: 12345678,
         score: 1,
+        statusId: 2,
         createdAt: "2022-01-01 22:58:01",
         updatedAt: "2022-01-01 22:58:01",
       },
@@ -44,7 +46,17 @@ module.exports = {
         surname: "Nobati",
         email: "dnobati@correo.com",
         password: 12345678,
+        statusId: 2,
+        createdAt: "2022-01-01 22:58:01",
+        updatedAt: "2022-01-01 22:58:01",
+      },
+      {
+        name: "José",
+        surname: "Licet",
+        email: "jlicet@correo.com",
+        password: 12345678,
         score: 1,
+        statusId: 2,
         createdAt: "2022-01-01 22:58:01",
         updatedAt: "2022-01-01 22:58:01",
       },
@@ -52,8 +64,8 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    down: (queryInterface, Sequelize) => {
-      return queryInterface.bulkDelete("Users", null, {});
-    };
+
+    await queryInterface.bulkDelete("Users", null, {});
+
   },
 };

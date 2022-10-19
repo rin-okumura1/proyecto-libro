@@ -1,4 +1,4 @@
-const { book, author, category, availability, language, rentalPrice } = require('../../db/models');
+const { book, author, category, availability, language, rentalPrice, Users, Status } = require('../../db/models');
 const { Op } = require('sequelize')
 
 const getAllBooks = async (params = {}) => {
@@ -8,7 +8,7 @@ const getAllBooks = async (params = {}) => {
         where: {
 
         },
-        attributes: { exclude: ['authorId', 'categoryId', 'availabilityId', 'languageId', 'createdAt', 'updatedAt'] },
+        attributes: { exclude: ['authorId', 'categoryId', 'availabilityId', 'languageId', 'createdAt', 'updatedAt', 'userId'] },
         include: [
             { 
                 model: author, 
@@ -29,6 +29,14 @@ const getAllBooks = async (params = {}) => {
             { 
                 model: rentalPrice ,
                 attributes: ['id', 'price']
+            },
+            { 
+                model: Users ,
+                attributes: ['id', 'name', 'surname', 'email'],
+                include: {
+                    model: Status,
+                    attributes: ['id', 'state']
+                }
             }
          ]
         

@@ -10,7 +10,11 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      User.belongsTo(models.Status)
+      // Un User pertenece a un único statusId de la entidad Status
+      User.belongsTo(models.Status);
+
+      // Un User tiene muchos Books
+      User.hasMany(models.book);
     }
   }
   User.init({
@@ -35,9 +39,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(15),
       allowNull: false,
       validate: {
-        len: {
-          args: [8, 10],
-          msg: 'Ingrese una contraseña válida, entre 8 y 10 caracteres'
+        is: {
+          args: /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,12}$/gm,
+          msg: 'Ingrese una contraseña válida, entre 8 y 12 caracteres, al menos 1 dígito, al menos una letra en mayúscula, al menos una letra en minúscula y al menos un carácter especial'
         }
       }
     },

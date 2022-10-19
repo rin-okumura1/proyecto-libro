@@ -23,6 +23,11 @@ module.exports = (sequelize, DataTypes) => {
 
       // Un Book sólo puede tener un registro de price de RentalPrices
       Book.hasOne(models.rentalPrice);
+
+      // Un Book pertenece a un User
+      Book.belongsTo(models.Users);
+
+
     }
   }
   Book.init({
