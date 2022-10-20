@@ -8,7 +8,7 @@ const getAllBooks = async (params = {}) => {
         where: {
 
         },
-        attributes: { exclude: ['authorId', 'categoryId', 'availabilityId', 'languageId', 'createdAt', 'updatedAt', 'userId'] },
+        attributes: { exclude: ['userId', 'authorId', 'categoryId', 'availabilityId', 'languageId', 'createdAt', 'updatedAt'] },
         include: [
             { 
                 model: author, 
