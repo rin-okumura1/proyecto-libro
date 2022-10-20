@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
 
       // Un User tiene muchos Books
       User.hasMany(models.book);
+
+      //  Un User puede tener muchos rentals
+      User.hasMany(models.Rental);
+      
     }
   }
   User.init({
