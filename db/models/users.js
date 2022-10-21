@@ -28,22 +28,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     email: {
       type: DataTypes.STRING(100),
-      allowNull: false,
-      validate: {
-        isEmail: {
-          msg: 'Ingrese una cuenta de correo electrónico válida'
-        }
-      }
+      allowNull: false
     },
     password: {
       type: DataTypes.STRING(15),
-      allowNull: false,
-      validate: {
-        is: {
-          args: /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,12}$/gm,
-          msg: 'Ingrese una contraseña válida, entre 8 y 12 caracteres, al menos 1 dígito, al menos una letra en mayúscula, al menos una letra en minúscula y al menos un carácter especial'
-        }
-      }
+      allowNull: false
     },
     score: {
       type: DataTypes.INTEGER,
