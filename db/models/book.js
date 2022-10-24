@@ -27,6 +27,10 @@ module.exports = (sequelize, DataTypes) => {
       // Un Book pertenece a un User
       Book.belongsTo(models.Users);
 
+      // Un book tiene muchos Exchange
+
+      Book.hasMany (models.Exchange);
+
 
     }
   }

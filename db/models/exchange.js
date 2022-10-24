@@ -10,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Exchange.belongsTo(models.book, {foreignKey: "bookId1"});
+      Exchange.belongsTo(models.book, {foreignKey:"bookId2"});
     }
   }
   Exchange.init({
