@@ -1,8 +1,8 @@
 {
   "development": {
     "username": "root",
-    "password": "NMan0ch3",
-    "database": "sistema_libros",
+    "password": "root.",
+    "database": "proyecto_libro",
     "host": "127.0.0.1",
     "port": 3306,
     "dialect": "mysql"
