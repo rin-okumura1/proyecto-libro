@@ -29,7 +29,8 @@ module.exports = (sequelize, DataTypes) => {
 
       // Un book tiene muchos Exchange
 
-      Book.hasMany (models.Exchange);
+      Book.hasMany (models.Exchange, {foreignKey: "bookId1"});
+      Book.hasMany (models.Exchange, {foreignKey: "bookId2"});
 
 
     }
