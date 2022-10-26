@@ -3,12 +3,14 @@ const {Exchange,book} = require ('../../db/models')
 const getById = async (id) => {
     return await Exchange.findByPk(id,{
         attributes: { exclude: ['id']},
-        include: [
+        include: [ 
             {
                 model:book,
                 attributes: ['id','title']
             }
+
         ]
+        
     })
 }
 
@@ -18,12 +20,14 @@ where:{
 
 },
 attributes: { exclude: ['id']},
-include: [
+include: [ 
     {
         model:book,
         attributes: ['id','title']
     }
+
 ]
+
     }
     return await Exchange.findAll(query);
 }
