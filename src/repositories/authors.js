@@ -1,9 +1,11 @@
-const {Author} = require('../../db/models')
+const { book, author } = require('../../db/models');
 
-async function getAll(){
-    return await Author.findAll()
+const getAllAuthorsWithBooks = async () => {
+    return await author.findAll({
+        include: [{ model: book}]
+    })
 }
 
-module.exports={
-    getAll
+module.exports = {
+    getAllAuthorsWithBooks
 }

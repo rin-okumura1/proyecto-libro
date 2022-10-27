@@ -10,14 +10,18 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      //Una Category tiene muchos Books
+      Category.hasMany(models.book);
     }
   }
   Category.init({
-    name: DataTypes.STRING
+    name: {
+      type: DataTypes.STRING(100),
+      allowNull: false
+    }
   }, {
     sequelize,
-    modelName: 'Category',
+    modelName: 'category',
     tableName: 'Categories'
   });
   return Category;
