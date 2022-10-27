@@ -51,7 +51,7 @@ router.post('/', async function (req, res, next) {
     try {
         if(dataNewBook) {
             let savedBook = await books.saveBook(authorId, editionYear, title, categoryId, languageId, synopsis, userId);
-            res.json(savedBook);
+            res.statusCode(201).json(savedBook);
         }
     }catch(error) {
         res.status(501).json({message: error});
