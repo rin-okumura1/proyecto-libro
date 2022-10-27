@@ -38,14 +38,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     title: {
       type: DataTypes.STRING(100),
-      allowNull: false,
-      validate: {
-        customValidator(value) {
-          if(value < 2 || value > 100 ) {
-            throw new Error('La longitud del título del libro debe ser mínimo 2 caracteres y máximo 100 caracteres')
-          }
-        }
-      }
+      allowNull: false
     },
     categoryId: {
       type: DataTypes.INTEGER,
