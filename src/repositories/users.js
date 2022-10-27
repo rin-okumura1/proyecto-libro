@@ -1,10 +1,16 @@
-const {
-  Users,
-  Status
-} = require("../../db/models")
+const {Users,Status} = require("../../db/models")
+
 const {
   param
 } = require("../../routes")
+
+
+async function exists(email) {
+return await Users.findOne({
+where:{email}
+})
+
+}
 
 async function getAll(params = {}) {
   let query = {
@@ -29,21 +35,20 @@ async function getById(id) {
   })
 }
 
-async function saveUser() {
+async function saveUser(data) {
   return await Users.create({
-    "name": "Aitor",
-    "surname": "Tilla",
-    "email": "aitorTilla@correo.com",
-    "password": 123554,
-    "score": 1,
-    "statusId": 2,
-    createdAt: "2022-01-01 22:58:01",
-    updatedAt: "2022-01-01 22:58:01"
+    "name": data.name,
+    "surname": data.surname,
+    "email": data.email,
+    "password": data.password,
+    "score": data.score,
+    "statusId": 2
   })
 }
 
 module.exports = {
   getById,
   getAll,
-  saveUser
+  saveUser,
+  exists
 }

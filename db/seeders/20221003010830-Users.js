@@ -9,7 +9,7 @@ module.exports = {
         "password":123554,
         "score":1,
         "statusId":1,
-  createdAt: "2022-01-01 22:58:01",
+        createdAt: "2022-01-01 22:58:01",
         updatedAt: "2022-01-01 22:58:01"
       },
       { 

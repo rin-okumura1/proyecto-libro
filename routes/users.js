@@ -1,4 +1,5 @@
 var express = require('express');
+const { route } = require('.');
 var router = express.Router();
 var repositories = require("../src/repositories/users")
 
@@ -17,11 +18,7 @@ router.get('/', async function (req, res, next) {
   res.json(retorno);
 });
 
-router.get("/p", async function (req, res, next) {
-  let lol = await repositories.saveUser()
-  lol.hecho = 'ok'
-  return await res.json(lol)
-})
+
 
 router.get('/:id', async function (req, res, next) {
   let user = await repositories.getById(req.params.id)
@@ -29,4 +26,25 @@ router.get('/:id', async function (req, res, next) {
 
   else res.status(404).end();
 });
+
+router.post('/', async function (req, res, next) {
+
+  if (!req.body.name || req.body.name.length<1) {
+    res.status(400).json({message:"name is undefined or too weak"})
+  }
+  if(!req.body.surname || req.body.surname.length<1){
+    res.status(400).json({message:"surname is undefined or too weak"})
+  }
+  if(!req.body.password || req.body.password.length<1){
+    res.status(400).json({message:"password is undefined or too weak"})
+  }
+  if(!req.body.score || req.body.score.length<1){
+    res.status(400).json({message:"score is too low"})
+  }
+
+  
+     
+  res.json(repositories.saveUser(req.body));
+});
+
 module.exports = router;
