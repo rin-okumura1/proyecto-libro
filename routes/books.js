@@ -54,7 +54,7 @@ router.post('/', async function (req, res, next) {
             res.status(201).json(savedBook);
         }
     }catch(error) {
-        res.status(501).json({message: error});
+        res.status(400).json({message: error});
     }
 
 });

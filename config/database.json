@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "NMan0ch3",
+    "password": "root",
     "database": "sistema_libros",
     "host": "127.0.0.1",
     "port": 3306,
