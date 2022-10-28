@@ -29,8 +29,8 @@ router.get('/:id', async function (req, res, next) {
 
 router.post('/', async function (req, res, next) {
 
-  if (!req.body.name || req.body.name.length<1) {
-    res.status(400).json({message:"name is undefined or too weak"})
+  if (!req.body.name || req.body.name.length<1 ) { 
+    res.status(400).json({message:"is unde fined"})
   }
   if(!req.body.surname || req.body.surname.length<1){
     res.status(400).json({message:"surname is undefined or too weak"})
@@ -42,9 +42,9 @@ router.post('/', async function (req, res, next) {
     res.status(400).json({message:"score is too low"})
   }
 
-  
+  let a=await repositories.saveUser(req.body)
      
-  res.json(repositories.saveUser(req.body));
+  res.json(a);
 });
 
 module.exports = router;
