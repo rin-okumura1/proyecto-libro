@@ -87,8 +87,21 @@ const getBookById = async (id) => {
     });
 };
 
+const saveBook = async (authorId, editionYear, title, categoryId, languageId, synopsis, userId) => {
+    return await book.create({
+        authorId,
+        editionYear,
+        title,
+        categoryId,
+        languageId,
+        synopsis,
+        userId
+    })
+}
+
 
 module.exports = {
     getBookById,
     getAllBooks,
+    saveBook,
 }
