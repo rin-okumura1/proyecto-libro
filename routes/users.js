@@ -44,7 +44,7 @@ router.post('/', async function (req, res, next) {
 
   let a=await repositories.saveUser(req.body)
      
-  res.json(a);
+  res.status(201).json(a);
 });
 
 module.exports = router;
