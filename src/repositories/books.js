@@ -69,11 +69,28 @@ const saveBook = async (authorId, editionYear, title, categoryId, languageId, sy
         synopsis,
         userId
     })
-}
+};
+
+const updateBook = async (bookId, dataToModifyBook) => {
+    return await book.update({
+        authorId: dataToModifyBook.authorId,
+        editionYear: dataToModifyBook.editionYear,
+        title: dataToModifyBook.title,
+        categoryId: dataToModifyBook.categoryId,
+        languageId: dataToModifyBook.languageId,
+        synopsis: dataToModifyBook.languageId
+    },
+    {
+        where: {
+            id: bookId
+        }
+    })
+};
 
 
 module.exports = {
     getBookById,
     getAllBooks,
     saveBook,
+    updateBook,
 }

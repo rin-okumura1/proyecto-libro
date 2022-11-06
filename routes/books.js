@@ -5,11 +5,12 @@ const books = require('../src/repositories/books')
 var users = require('../src/repositories/users')
 var authors = require('../src/repositories/authors')
 var categories = require('../src/repositories/categories')
-var languages = require('../src/repositories/languages')
+var languages = require('../src/repositories/languages');
+const { Error } = require("sequelize");
 
-async function bookCreateValidation (dataNewBook) {
+async function bookValidation (dataBook) {
 
-    const {authorId, editionYear, title, categoryId, languageId, synopsis, userId } = dataNewBook;
+    const {authorId, editionYear, title, categoryId, languageId, synopsis, userId } = dataBook;
 
     if (!userId || ! await users.getById(userId)) { 
         throw new Error('USER_DOES_NOT_EXIST')
@@ -82,19 +83,43 @@ router.get('/:bookId', async (req, res) => {
     
 });
 
-// Dar de alta un uevo libro
+// Dar de alta un nuevo libro
 router.post('/', async function (req, res, next) {
 
     let dataNewBook = req.body;
-    const {authorId, editionYear, title, categoryId, languageId, synopsis, userId } = dataNewBook;
+    
     try {
         if(dataNewBook) {
-
-            await bookCreateValidation(dataNewBook);
-
-            let savedBook = await books.saveBook(authorId, editionYear, title, categoryId, languageId, synopsis, userId);
-            res.status(201).json(savedBook);
+            throw new Error('BAD_REQUEST')
         }
+
+        await bookValidation(dataNewBook);
+        
+        const {authorId, editionYear, title, categoryId, languageId, synopsis, userId } = dataNewBook;
+        let savedBook = await books.saveBook(authorId, editionYear, title, categoryId, languageId, synopsis, userId);
+        res.status(201).json(savedBook);
+        
+    }catch(error) {
+        res.status(400).json({message: error.message});
+    }
+
+});
+
+router.put('/:bookId', async function (req, res, next) {
+
+    let bookId = req.params.bookId;
+    let bookToModify = await books.getBookById(bookId)
+    let dataToModifyBook = req.body;
+    try {
+        if(!bookToModify || !dataToModifyBook) {
+            throw new Error('BAD_REQUEST')
+        }
+
+        await bookValidation(dataToModifyBook);
+            
+        let updatedBook = await books.updateBook(bookId, dataToModifyBook);
+        res.status(201).json(updatedBook);
+        
     }catch(error) {
         res.status(400).json({message: error.message});
     }
