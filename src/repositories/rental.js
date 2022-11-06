@@ -63,7 +63,47 @@ async function getAll(params = {}) {
   return await Rental.findAll(query);
 }
 
+async function saveRental(userId, bookId,dateFrom , dateToExpect) {
+  return await Rental.create({
+    userId, 
+    bookId,
+   dateFrom , 
+   dateToExpect,
+   dateToReal: dateToExpect,
+  })
+}
+
+async function updatedDateToReal (rentalId,dateToReal){
+  return await Rental.update(
+    {
+      dateToReal: dateToReal
+    },
+    {
+      where: {
+        id: rentalId
+      }
+    }
+  )
+}
+
+/*async function upsert(dateToReal, rentalId) {
+  return await Rental
+      .findOne({ where: rentalId })
+      .then(function(obj) {
+          // update
+          if(obj)
+              return obj.update(dateToReal);
+          // insert
+          //return Model.create(values);
+          console.log(obj)
+        })
+       
+      
+}*/
+
 module.exports = {
   getById,
   getAll,
+  saveRental,
+  updatedDateToReal,
 };

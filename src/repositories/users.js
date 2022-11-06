@@ -9,8 +9,11 @@ async function getAll(){
 async function getById(id){
   return await Users.findByPk(id)
     }
-    
 
+
+async function checkUser(userId){
+ return await getById(userId)
+}
     
     module.exports={
         getById,
