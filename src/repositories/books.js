@@ -60,18 +60,7 @@ const getBookById = async (id) => {
     return await book.findByPk(id, query);
 };
 
-/* const createBook = async (authorId, editionYear, title, categoryId, languageId, synopsis, userId) => {
-    return await book.create({
-        authorId,
-        editionYear,
-        title,
-        categoryId,
-        languageId,
-        synopsis,
-        userId
-    })
-}; */
-
+//Crear o dar de alta un nuevo libro
 const createBook = async (authorId, editionYear, title, categoryId, languageId, synopsis, userId, price) => {
      const createdBook = await book.create({
             authorId,
@@ -91,6 +80,7 @@ const createBook = async (authorId, editionYear, title, categoryId, languageId, 
     return createdBook;
 };
 
+//Actualiza los datos de un libro
 const updateBook = async (bookId, dataToModifyBook) => {
 
     if(dataToModifyBook.price) await setPriceToBook(bookId, dataToModifyBook.price)
@@ -110,6 +100,7 @@ const updateBook = async (bookId, dataToModifyBook) => {
     })
 };
 
+//Setear el precio del libro, cuando el precio es informado
 const setPriceToBook = async (bookId, price) => {
     const bookToRental = await rentalPrice.findOrCreate({
         where: {
@@ -129,7 +120,7 @@ const setPriceToBook = async (bookId, price) => {
                 bookId
             }
         })
-    }
+    };
 };
 
 //Verifica si el estado del libro es Disponible o No_Disponible
@@ -139,6 +130,7 @@ const isAvailable = async (bookId) => {
     return await availabilityId == AVAILABILITY;
 }
 
+//Eliminar un libro
 const deleteBook = async (bookId) => {
     let bookDelete = await book.findOne({
         where: {
