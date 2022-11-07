@@ -10,7 +10,7 @@ const { Error } = require("sequelize");
 
 async function bookValidation (dataBook) {
 
-    const {authorId, editionYear, title, categoryId, languageId, synopsis, userId } = dataBook;
+    const {authorId, editionYear, title, categoryId, languageId, synopsis, userId, price } = dataBook;
 
     if (!userId || ! await users.getById(userId)) { 
         throw new Error('USER_DOES_NOT_EXIST')
@@ -38,6 +38,10 @@ async function bookValidation (dataBook) {
 
     if (!synopsis || (synopsis.length < 1 || synopsis.length > 255)) { 
         throw new Error('INVALID_SYNOPSIS')
+    }
+
+    if (price <= 0) { 
+        throw new Error('INVALID_PRICE')
     }
 }
 
@@ -89,15 +93,15 @@ router.post('/', async function (req, res, next) {
     let dataNewBook = req.body;
     
     try {
-        if(dataNewBook) {
+        if(!dataNewBook) {
             throw new Error('BAD_REQUEST')
         }
 
         await bookValidation(dataNewBook);
         
-        const {authorId, editionYear, title, categoryId, languageId, synopsis, userId } = dataNewBook;
-        let savedBook = await books.saveBook(authorId, editionYear, title, categoryId, languageId, synopsis, userId);
-        res.status(201).json(savedBook);
+        const {authorId, editionYear, title, categoryId, languageId, synopsis, userId, price } = dataNewBook;
+        let createdBook = await books.createBook(authorId, editionYear, title, categoryId, languageId, synopsis, userId, price);
+        res.status(201).json(createdBook);
         
     }catch(error) {
         res.status(400).json({message: error.message});
@@ -114,11 +118,38 @@ router.put('/:bookId', async function (req, res, next) {
         if(!bookToModify || !dataToModifyBook) {
             throw new Error('BAD_REQUEST')
         }
-
+        
         await bookValidation(dataToModifyBook);
-            
+        
+        if(! await books.isAvailable(bookId)) {
+            throw new Error("BOOK_DON'T_AVAILABLE")
+        }
+
         let updatedBook = await books.updateBook(bookId, dataToModifyBook);
-        res.status(201).json(updatedBook);
+        res.status(200).json(updatedBook);
+          
+    }catch(error) {
+        res.status(400).json({message: error.message});
+    }
+
+});
+
+router.delete('/:bookId', async function (req, res, next) {
+
+    let bookId = req.params.bookId;
+    let bookToDelete = await books.getBookById(bookId)
+    
+    try {
+        if(!bookToDelete) {
+            throw new Error('BAD_REQUEST')
+        }
+
+        if(! await books.isAvailable(bookId)) {
+            throw new Error("BOOK_DON'T_AVAILABLE")
+        }
+
+        let deletedtedBook = await books.deleteBook(bookId);
+        res.status(200).json(deletedtedBook);
         
     }catch(error) {
         res.status(400).json({message: error.message});
