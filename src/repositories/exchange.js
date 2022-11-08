@@ -1,5 +1,6 @@
 const {Exchange,book, sequelize} = require ('../../db/models')
 
+
 const getById = async (id) => {
     return await Exchange.findByPk(id,{
         attributes: { exclude: ["id"] },
@@ -39,7 +40,19 @@ const getAll = async (params = {}) => {
     return await Exchange.findAll(query);
   };
 
+  async function saveExchange( bookId1,bookId2, date) {
+    return await Exchange.create({
+      
+      bookId1,
+      bookId2,
+       date
+    })
+  }
+  
+ 
+
 module.exports = {
     getById, 
     getAll,
+    saveExchange
 }

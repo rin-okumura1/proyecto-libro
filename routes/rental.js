@@ -3,7 +3,6 @@ var router = express.Router();
 var Rental = require('../src/repositories/rental')
 var users = require('../src/repositories/users')
 var books = require('../src/repositories/books')
-var books = require('../src/repositories/books');
 var date = require('../src/repositories/date');
 
 
