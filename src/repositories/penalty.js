@@ -10,58 +10,90 @@ const getAll = async (params = {}) => {
             { 
                 model: Users ,
                 attributes: ['id', 'name', 'surname', 'email']
-            }
-        ]
+            }]
 }
 return await Penalty.findAll(query);
 };
 
 const getById = async (id) => {
     return await Penalty.findByPk(id, {
-        
         attributes: { exclude: ['id'] },
         include: [
             { 
                 model: Users ,
                 attributes: ['id', 'name', 'surname', 'email'],
-            
             }
         ]
 })
 };
 
 async function generarPenalidad(userId){
-    // si existe usuario en sanciones Crea
-    // existiendo.. si tiene cantidad penalidades !0 --> update (id,cant, fecha)
-    // existiendo .. si tiene fecha vencida --> update (id, cant, fecha)
-    // existiendo .. si tiene fecha vigente  --> sumarFechaSancionVigente(id, cant,fecha)
-    console.log("estoy en el metodo generar penalidad")
-    console.log("devuelvo " + userId)
-    let penalty = findOne({
-        
-        where: 
-            {
-                userId: userId
-            }
-    })
-    console.log(penalty)
-    if (!penalty){  // si no existe
+    // usuario  no tiene registro de sanciones --> se crea nuevo registro [X]
+    // existiendo.. si tiene cantidad penalidades entonces:
+    //  1.si tiene fecha vencida --> update (id, cant, fecha)
+    //  2.si tiene fecha vigente  --> sumarFechaSancionVigente(id, cant,fecha)
+   let penalty = await getPenaltyByIdObj(userId)
+   let dateNow = await date.getDateNow()
+   let dateToPenalty = await date.setFormatDateToExpect(penalty.dateTo)
+    
+    if (!penalty){  // si no existe registro de sanciones
         penalty=createPenalty(userId)
+    } 
+    if (penalty.cantPenalty<10){  // si la penalidad es menor a 10
+        if (dateToPenalty <= dateNow){ // fecha vencida 
+            updatedPenalty(penalty.id, penalty.cantPenalty)
+       } else {  // fecha vigente
+        dateToPenalty= date.updateDateForPenalty (penalty.dateTo)  // actualiza el dateTo
+        updatedPenalty(penalty.id, penalty.cantPenalty, dateToPenalty )
+       }
+    } else {    // si la penalidad es mayor a 10 se cambia el status del usuario
+        
     }
+    
+    
 
 
     
-    return await penalty
+    
 }
 
+function getPenaltyByIdObj(userId){
+    return  Penalty.findOne({
+      where: {
+        userId: userId
+      }
+    })
+  }
 
 async function createPenalty(userId){
-let datePenalty = date.getDateForPenalty()
+let dateTo = date.getDateForPenalty()
     return await Penalty.create({
         userId,
-        datePenalty,
+        dateTo,
       })
+
 }
+async function updatedPenalty (penaltyId, cantPenalty, dateTo){
+    console.log("ingresando al update Penalty")
+    console.log(dateTo)
+
+    if (!dateTo) {
+        let dateTo = date.getDateForPenalty()
+    }
+
+    
+    cantPenalty ++
+    return await Penalty.update(
+      {
+        cantPenalty: cantPenalty,
+        dateTo: dateTo
+      },
+      {
+        where: {
+          id: penaltyId
+        }
+      }
+)};
 
 
 
@@ -71,4 +103,6 @@ module.exports = {
     getById, 
     getAll,
     generarPenalidad,
+    getPenaltyByIdObj,
+    updatedPenalty,
 }

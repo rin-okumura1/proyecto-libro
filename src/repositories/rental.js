@@ -86,17 +86,13 @@ async function updatedDateToReal (rentalId,dateToReal){
   )
 }
 
-/*async function getUserIdRental(){
-
-  return await Rental.findByPk(2, {
-    attributes: {
-      include: ["userId"],
+async function getRentalByIdObj(rentalId){
+  return await Rental.findOne({
+    where: {
+      id: rentalId
     }
-  });
-}*/
-
-//userId= await getUserIdRental()
-//console.log(userId)
+  })
+}
 
 
 
@@ -107,5 +103,6 @@ module.exports = {
   getAll,
   saveRental,
   updatedDateToReal,
+  getRentalByIdObj
  
 };

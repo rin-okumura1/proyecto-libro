@@ -16,7 +16,7 @@ return await formattedToday
 }
 
 
-// SETEAMOS LA FECHA DE PENALIDAD
+// SETEAMOS LA FECHA DE PENALIDAD COMUN
 function getDateForPenalty() {
 
     const today = new Date();
@@ -30,6 +30,20 @@ function getDateForPenalty() {
     
     const formattedToday = yyyy + '-' + mm + '-' + dd; 
     
+    return formattedToday
+    }
+
+// SETEAMOS LA FECHA DE PENALIDAD CON FECHA VIGENTE
+function updateDateForPenalty(dateTo) {
+       
+    const today = dateTo;
+    today.setDate(today.getDate()+5)
+    const yyyy = today.getFullYear();
+    let mm = today.getMonth() + 1; // Mes comienza en 0
+    let dd = today.getDate();
+    if (dd < 10) dd = '0' + dd; // para que sea en dos cifras
+    if (mm < 10) mm = '0' + mm;
+    const formattedToday = yyyy + '-' + mm + '-' + dd; 
     return formattedToday
     }
 
@@ -59,4 +73,5 @@ module.exports=
     getDateNow,
     getDateForPenalty,
     setFormatDateToExpect,
+    updateDateForPenalty,
 }

@@ -3,7 +3,6 @@ var router = express.Router();
 var Rental = require('../src/repositories/rental')
 var users = require('../src/repositories/users')
 var books = require('../src/repositories/books')
-var books = require('../src/repositories/books')
 var date = require('../src/repositories/date')
 var penalties = require('../src/repositories/penalty')
 
@@ -67,43 +66,34 @@ dateNow=date.getDateNow()
 /*PUT*/
 router.put('/:id', async function(req, res) {
   let rentalId =  req.params.id;
-  let rental = await Rental.getById(rentalId)
   let dateToReal = req.body.dateToReal
-  
-    console.log(rental)
+  let rentalObj = await Rental.getRentalByIdObj(rentalId)
+  let userId= rentalObj.userId
   dateNow= await date.getDateNow()
   
   try {
-    if(rental) {
-      
-
+    if(rentalObj) {
         console.log("entrando al if de try")
       if ( dateToReal != dateNow || !dateToReal) { 
         return res.status(400).json({message:"bad dateToReal"})
       }
         let update = await Rental.updatedDateToReal(rentalId,dateToReal);
-       
-        
-
-        /*if (update==1){
+        rentalObj= await Rental.getById(rentalId)
+        if (update==1){
           console.log("paso true")
-          dateExpect= date.setFormatDateToExpect(rental.dateToExpect)
+          dateExpect= date.setFormatDateToExpect(rentalObj.dateToExpect)
           console.log("devolvio el dato esperado " + dateExpect)
           result = date.getDateNow > dateExpect
           console.log("devolvio resultado de result " + result)
         if (result ){
-          console.log("ingresando para generar penalidad")
-        await penalties.generarPenalidad(rental.userId)
-        }
-      }*/
-        rental= await Rental.getById(rentalId)
-        //console.log("imprimo user id" )
-        res.status(201).json(rental);
-    }
+          console.log("ingresando para generar penalidad nro : " + userId)
+          await penalties.generarPenalidad(userId)
+        } 
+        res.status(201).json(rentalObj);
+      }}
 }catch(error) {
     res.status(400).json({message: error});
-}
-});
+}});
 
 
 
