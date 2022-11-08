@@ -56,8 +56,18 @@ const getAllBooks = async (params = {}) => {
     return await book.findAll(query);
 };
 
-const getBookById = async (id) => {
+
+//Para la búsqueda de un libro por id
+/* const getBookById = async (id) => {
     return await book.findByPk(id, query);
+}; */
+
+const getBookById = async (bookId) => {
+    return await book.findOne({
+        where: {
+            id: bookId
+        }
+    });
 };
 
 //Crear o dar de alta un nuevo libro
