@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       User.belongsTo(models.Status);
 
       // Un user puede pertenecer a muchos Books relacionados consigo mismo
-      User.hasMany(models.book)
+      //User.hasMany(models.book)
     }
   }
   User.init({
@@ -43,6 +43,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 2
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: Date.now()
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: Date.now()
     }
   }, {
     sequelize,

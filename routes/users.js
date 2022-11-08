@@ -14,7 +14,7 @@ async function userValidation(dataNewUser) {
   if(!surname || (surname.length < 1 || surname.length > 100)){
     throw new Error('BAD_SURNAME');
   }
-  if(!email || !isValidEmail(email) || users.existEmail(email)){
+  if(!email || ! await isValidEmail(email) || await users.existEmail(email)){
     throw new Error('BAD_EMAIL');
   }
   if(!password || (password.length < 8 || password.length > 12)){
@@ -56,7 +56,7 @@ router.post('/', async function (req, res, next) {
     if(!dataNewUser) {
       throw new Error('BAD_REQUEST');
     }
-
+    console.log('Email: ' + dataNewUser.email);
     await userValidation(dataNewUser);
 
     let newUser = await users.saveUser(dataNewUser)

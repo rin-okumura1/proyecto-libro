@@ -26,7 +26,7 @@ async function existEmail(newEmail) {
       email: newEmail
     }
   });
-  return userWithSameEmail != undefined;
+  return (userWithSameEmail != null);
 }
 
 module.exports={

@@ -2,8 +2,8 @@
  
   "development": {
     "username": "root",
-    "password": "43872165",
-    "database": "tp2_proyecyo_libros",
+    "password": "root",
+    "database": "sistema_libros",
     "host": "localhost",
     "port":"3306",
     "dialect": "mysql"
