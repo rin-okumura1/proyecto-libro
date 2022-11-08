@@ -20,6 +20,26 @@ async function saveUser(dataNewUser) {
   return newUser;
 }
 
+async function updateUser(userId, newDataUser) {
+  await Users.update({
+    name: newDataUser.name,
+    surname: newDataUser.surname,
+    email: newDataUser.email,
+    password: newDataUser.password,
+
+  },
+  {
+    where: {
+      id: userId
+    }
+  });
+  return await Users.findOne({
+    where: {
+      id: userId
+    }
+  });
+}
+
 async function existEmail(newEmail) {
   let userWithSameEmail = await Users.findOne({
     where: {
@@ -34,4 +54,5 @@ module.exports={
     getAll,
     existEmail,
     saveUser,
+    updateUser,
 }
