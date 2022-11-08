@@ -22,7 +22,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     cantPenalty: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      defaultValue: 1
     },
     dateTo: {
       type: DataTypes.DATE,
