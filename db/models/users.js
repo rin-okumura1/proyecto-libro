@@ -10,16 +10,40 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      User.belongsTo(models.Status)
+      // Un user pertenece a un único statusId de la entidad Status
+      User.belongsTo(models.Status);
+
+      // Un user puede pertenecer a muchos Books relacionados consigo mismo
+      User.hasMany(models.book)
     }
   }
   User.init({
-    name: DataTypes.STRING,
-    surname: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-    score: DataTypes.INTEGER,
-    statusId: DataTypes.INTEGER
+    name: {
+      type: DataTypes.STRING(100),
+      allowNull: false
+    } ,
+    surname: {
+      type: DataTypes.STRING(100),
+      allowNull: false
+    },
+    email: {
+      type: DataTypes.STRING(100),
+      allowNull: false
+    },
+    password: {
+      type: DataTypes.STRING(15),
+      allowNull: false
+    },
+    score: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 0
+    },
+    statusId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 2
+    }
   }, {
     sequelize,
     modelName: 'Users',
