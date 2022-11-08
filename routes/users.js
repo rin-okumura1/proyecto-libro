@@ -52,6 +52,7 @@ router.get('/', async function (req, res, next) {
   res.json(retorno);
 });
 
+//Endpoint para dar de alta un nuevo usuario
 router.post('/', async function (req, res, next) {
 
   let dataNewUser = req.body;
@@ -73,6 +74,7 @@ router.post('/', async function (req, res, next) {
   }
 });
 
+//Endpoint para modificar datos del usuario
 router.put('/:id', async function (req, res, next) {
 
   let userId = req.params.id;

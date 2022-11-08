@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       User.belongsTo(models.Status);
 
       // Un user puede pertenecer a muchos Books relacionados consigo mismo
-      //User.hasMany(models.book)
+      User.hasMany(models.book)
     }
   }
   User.init({
