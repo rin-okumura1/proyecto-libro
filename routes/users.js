@@ -14,9 +14,6 @@ async function basicDataValidate(dataNewUser) {
   if(!surname || (surname.length < 1 || surname.length > 100)){
     throw new Error('BAD_SURNAME');
   }
-  /* if(!email || ! await isValidEmail(email) || await users.existEmail(email)){
-    throw new Error('BAD_EMAIL');
-  } */
   if(!password || (password.length < 8 || password.length > 12)){
     throw new Error('BAD_PASSWORD');
   }
@@ -43,25 +40,16 @@ async function isValidEmail(email) {
   return await regExp.test(email);
 };
 
-/* GET users listing. */
+//Se utilizará este endpoint, sólo para verificar la existencia de los usuarios registrados
 router.get('/', async function (req, res, next) {
   let retorno = await users.getAll({
     statusId: req.query.statusId
   })
 
-
   if (retorno.length == 0) {
     res.status(404).end()
   }
   res.json(retorno);
-});
-
-
-router.get('/:id', async function (req, res, next) {
-  let user = await users.getById(req.params.id)
-  if (user) return res.json(user);
-
-  else res.status(404).end();
 });
 
 router.post('/', async function (req, res, next) {

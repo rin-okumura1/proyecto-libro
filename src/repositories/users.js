@@ -38,7 +38,7 @@ async function updateUser(userId, newDataUser) {
       id: userId
     }
   });
-}
+};
 
 async function existEmail(newEmail) {
   let userWithSameEmail = await Users.findOne({
@@ -55,4 +55,5 @@ module.exports={
     existEmail,
     saveUser,
     updateUser,
+    deleteUser,
 }
