@@ -58,17 +58,17 @@ const getAllBooks = async (params = {}) => {
 
 
 //Para la búsqueda de un libro por id
-/* const getBookById = async (id) => {
+const getBookById = async (id) => {
     return await book.findByPk(id, query);
-}; */
+};
 
-const getBookById = async (bookId) => {
+/* const getBookById = async (bookId) => {
     return await book.findOne({
         where: {
             id: bookId
         }
     });
-};
+}; */
 
 //Crear o dar de alta un nuevo libro
 const createBook = async (authorId, editionYear, title, categoryId, languageId, synopsis, userId, price) => {
@@ -112,25 +112,23 @@ const updateBook = async (bookId, dataToModifyBook) => {
 
 //Setear el precio del libro, cuando el precio es informado
 const setPriceToBook = async (bookId, price) => {
-    const bookToRental = await rentalPrice.findOrCreate({
+    await rentalPrice.findOrCreate({
         where: {
             bookId
         },
         defaults: {
             price
         }
-    })
-    
-    if(bookToRental) {
-        return await rentalPrice.update({
-            price
-        },
-        {
-            where: {
-                bookId
-            }
-        })
-    };
+    });
+
+    return await rentalPrice.update({
+        price
+    },
+    {
+        where: {
+            bookId
+        }
+    });
 };
 
 //Verifica si el estado del libro es Disponible o No_Disponible
