@@ -10,6 +10,7 @@ var penalties = require('../src/repositories/penalty')
 
 
 
+
 /* GET home page. */
 router.get('/', async function(req, res, next) {
   res.json(await rental.getAll());
