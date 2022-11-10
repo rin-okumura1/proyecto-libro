@@ -6,7 +6,7 @@ var users = require('../src/repositories/users')
 var authors = require('../src/repositories/authors')
 var categories = require('../src/repositories/categories')
 var languages = require('../src/repositories/languages');
-const { Error } = require("sequelize");
+//const { Error } = require("sequelize");
 
 async function bookValidation (dataBook) {
 
@@ -63,7 +63,7 @@ router.get('/', async function (req, res, next) {
 
     await books.getAllBooks()
     .then((data) => {
-        res.json(data)
+       return res.json(data)
     })
     .catch((error) => {
         res.json(error)
@@ -119,11 +119,11 @@ router.put('/:bookId', async function (req, res, next) {
             throw new Error('BAD_REQUEST')
         }
         
-        await bookValidation(dataToModifyBook);
-        
         if(! await books.isAvailable(bookId)) {
             throw new Error("BOOK_DON'T_AVAILABLE")
         }
+        
+        await bookValidation(dataToModifyBook);
 
         let updatedBook = await books.updateBook(bookId, dataToModifyBook);
         res.status(200).json(updatedBook);
