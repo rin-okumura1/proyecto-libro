@@ -31,10 +31,7 @@ router.post('/', async function (req, res, next) {
 
 let data= req.body;
 const { userId, bookId, dateFrom, dateToExpect } = data;
-  
-dateNow=date.getDateNow()
-
-
+dateNow=await date.getDateNow()
 
   try {
       if(data) {
@@ -53,6 +50,14 @@ dateNow=date.getDateNow()
 
         if ( (dateToExpect < dateNow && dateToExpect < dateFrom )|| !req.body.dateToExpect) { 
           return res.status(400).json({message:"bad dateToExpect"})
+        }
+        // si usuario no tiene fecha vigente de sancion
+
+        let penalty = await penalties.getPenaltyByIdObj(req.body.userId)
+        let datePenalty = date.setFormatDateToExpect(penalty.dateTo)
+
+        if (datePenalty > dateNow){
+          return res.status(400).json({message:" penalty valid"})
         }
           let saved = await Rental.saveRental(userId, bookId,dateFrom , dateToExpect);
           res.status(201).json(saved);
@@ -73,20 +78,15 @@ router.put('/:id', async function(req, res) {
   
   try {
     if(rentalObj) {
-        console.log("entrando al if de try")
       if ( dateToReal != dateNow || !dateToReal) { 
         return res.status(400).json({message:"bad dateToReal"})
       }
         let update = await Rental.updatedDateToReal(rentalId,dateToReal);
         rentalObj= await Rental.getById(rentalId)
         if (update==1){
-          console.log("paso true")
           dateExpect= date.setFormatDateToExpect(rentalObj.dateToExpect)
-          console.log("devolvio el dato esperado " + dateExpect)
           result = date.getDateNow > dateExpect
-          console.log("devolvio resultado de result " + result)
         if (result ){
-          console.log("ingresando para generar penalidad nro : " + userId)
           await penalties.generarPenalidad(userId)
         } 
         res.status(201).json(rentalObj);

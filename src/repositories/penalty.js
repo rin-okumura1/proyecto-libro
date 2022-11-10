@@ -47,7 +47,11 @@ async function generarPenalidad(userId){
         updatedPenalty(penalty.id, penalty.cantPenalty, dateToPenalty )
        }
     } else {    // si la penalidad es mayor a 10 se cambia el status del usuario
-        
+        console.log("si es mayor a 10 cantpenalty");
+        let userObj = Users.getObjUser(userId)
+        console.log(userObjt.id);
+        //buscar el status con statusID que tenemos con el usuario
+        // modificamos el status de disponible a no disponible.
     }
     
     

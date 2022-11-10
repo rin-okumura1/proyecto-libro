@@ -11,11 +11,12 @@ async function getById(id){
     }
 
 
-async function checkUser(userId){
- return await getById(userId)
+async function getObjUser(userId){
+ return await Users.findOne(userId)
 }
     
     module.exports={
         getById,
-        getAll
+        getAll,
+        getObjUser,
     }
