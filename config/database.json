@@ -1,10 +1,17 @@
 {
   "development": {
     "username": "root",
+<<<<<<< HEAD
     "password": "root.",
     "database": "proyecto_libro",
     "host": "127.0.0.1",
     "port": 3306,
+=======
+    "password": "root",
+    "database": "sistema_libros",
+    "host": "localhost",
+    "port":"3306",
+>>>>>>> e2e8625dac4fbad44ef5c8b7b8a0f5ab9fa868b6
     "dialect": "mysql"
   },
   "test": {
