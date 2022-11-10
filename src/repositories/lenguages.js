@@ -1,9 +1,16 @@
-const {lenguage} = require('../../db/models')
+const {language} = require('../../db/models')
 
-async function getAll(){
-    return await lenguage.findAll()
+async function getAllById(ids){
+    return await language.findAll(
+        {
+            where:{
+                id:categoriesIds
+            },
+            attributes:['language']
+        }
+    )
 }
 
 module.exports={
-    getAll
+    getAllById
 }

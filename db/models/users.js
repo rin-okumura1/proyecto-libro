@@ -13,8 +13,16 @@ module.exports = (sequelize, DataTypes) => {
       // Un User pertenece a un único statusId de la entidad Status
       User.belongsTo(models.Status);
 
-      // Un User tiene muchos Books
+      // Un User publica muchos Books para vender/intercambiar
       User.hasMany(models.book);
+
+       //user tiene muchos favoritos (autores)
+       User.belongsToMany(models.author,  { through: 'AuthorsByUsers' });
+       //user tiene muchos favoritos (categorias)
+       User.belongsToMany(models.category, { through: 'CategoriesByUsers'});
+       //user tiene muchos favoritos (lenguajes)
+       User.belongsToMany(models.lenguages,  { through: 'LanguagesByUsers'});
+
     }
   }
   User.init({

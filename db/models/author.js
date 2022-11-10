@@ -12,7 +12,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       //Un Author tiene muchos Books
       Author.hasMany(models.book);
-      
+     //un author tiene varios usuarios que lo prefieren
+      Author.belongsToMany(models.Users, { through: 'AuthorsByUser' }); 
     }
   }
   Author.init({

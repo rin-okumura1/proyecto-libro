@@ -4,8 +4,28 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
    
-      await queryInterface.bulkInsert('Categories', [{
-      }], {});
+      await queryInterface.bulkInsert('Categories', [
+        
+        {name:'Poesia'},
+
+        {name:'Historico'},
+
+        {name:'Romance'},
+
+        {name:'Ficcion'},
+
+        {name:'Teatro'},
+
+        {name:'Filosofia'},
+
+        {name:'Fantasia'},
+
+        {name:'Comedia'},
+
+        {name:'Autoayuda'},
+
+      
+      ], {});
   
   },
 

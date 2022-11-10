@@ -12,6 +12,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // Un Language puede tener muchos registros de Books
       Language.hasMany(models.book);
+
+      //un lenguage tiene varios usuarios que lo prefieres
+      Language.belongsToMany(models.Users);
     }
   }
   Language.init({

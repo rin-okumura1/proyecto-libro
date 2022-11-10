@@ -6,6 +6,36 @@ const getAllAuthorsWithBooks = async () => {
     })
 }
 
+async function getAllById(ids){
+    return await author.findAll({
+
+       where: {
+            id: ids
+        },
+       attributes:['name'] }
+
+    )
+}
+
+async function save(userId, authorId){
+    return await author.create({userId, authorId})
+}
+
+
+async function getByName(authorName){
+    return await author.findOne({
+        where: {
+             name: authorName
+         }
+        }
+     )
+
+}
+
+
 module.exports = {
-    getAllAuthorsWithBooks
+    getAllAuthorsWithBooks,
+    getAllById,
+    getByName,
+    save
 }
