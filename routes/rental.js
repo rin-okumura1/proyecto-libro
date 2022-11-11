@@ -34,28 +34,32 @@ dateNow=date.getDate()
       if(data) {
 
         if (! await  users.getById(req.body.userId) || !req.body.userId ) {  // si user existe y si userid no esta vacio
-          return res.status(400).json({message:"is undefined"})
+          return res.status(400).json({message:"BAD_REQUEST"})
         }
 
         if (! await  books.getBookById(req.body.bookId) || !req.body.bookId ) { // si book existe y si bookid no esta vacio
-          return res.status(400).json({message:"is undefined"})
+          return res.status(400).json({message:"BAD_REQUEST"})
         }
 
         if ( dateFrom < dateNow || !req.body.dateFrom) {    // si desde que fecha es menor del dia actual
-          return res.status(400).json({message:"bad dateFrom"})
+          return res.status(400).json({message:"INVALID_DATE_FROM"})
         }
 
         if ( (dateToExpect < dateNow && dateToExpect < dateFrom )|| !req.body.dateToExpect) { // si la fecha esperada es menor que la actual y menor que desde
-          return res.status(400).json({message:"bad dateToExpect"})
+          return res.status(400).json({message:"INVALID_DATE_TO_EXPECT"})
         }
 
-        // si user esta disponible
-        // si book esta disponible
+        if ( (! await  users.isEnable(req.body.userId))) { // si user esta disponible
+          return res.status(400).json({message:"USER_DON'T_ENABLE"})
+        }
+        if ( (! await  books.isAvailable(req.body.bookId))) {  // si book esta disponible
+          return res.status(400).json({message:"BOOK_DON'T_AVAILABLE"})
+        }
 
           let saved = await Rental.saveRental(userId, bookId,dateFrom , dateToExpect);
-
-          // si saved da true, hay que pedirle a status que cambie el estado de user y book
-          
+          if (saved){  // si saved da true, hay que pedirle a status que cambie el estado de book
+            books.changeAvailability(bookId)
+          }
           res.status(201).json(saved);
       }
   }catch(error) {
@@ -74,9 +78,8 @@ router.put('/:id', async function(req, res) {
   try {
     if(rental) {
       if ( dateToReal != dateNow || !dateToReal) { 
-        return res.status(400).json({message:"bad dateToReal"})
+        return res.status(400).json({message:"INVALID_DATE_TO_REAL"})
       }
-         console.log("antes de hacer el update");
          await Rental.updatedDateToReal(rentalId,dateToReal);
          rental= await Rental.getById(rentalId)
         res.status(201).json(rental);

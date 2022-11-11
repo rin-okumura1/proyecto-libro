@@ -1,12 +1,13 @@
 
 const { Users,Status } = require("../../db/models")
+const ENABLE = 2;
 
 async function getAll() {
   return await Users.findAll({include:[Status]})
 }
 
 async function getById(id) {
-  return await Users.findOne(id)
+  return await Users.findByPk(id)
 }
 
 async function saveUser(dataNewUser) {
@@ -49,10 +50,17 @@ async function existEmail(newEmail) {
   return (userWithSameEmail != null);
 }
 
+const isEnable = async (userId) => {
+  let userFound = await Users.findByPk(userId);
+  const {statusId} = userFound;
+  return await statusId == ENABLE;
+}
+
 module.exports={
     getById,
     getAll,
     existEmail,
     saveUser,
     updateUser,
+    isEnable,
 }
