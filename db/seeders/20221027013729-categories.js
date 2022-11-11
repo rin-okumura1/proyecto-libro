@@ -6,23 +6,40 @@ module.exports = {
    
       await queryInterface.bulkInsert('Categories', [
         
-        {name:'Poesia'},
+        {name:'Poesia',
+        "createdAt": "2022-02-01 21:00:00",
+        "updatedAt": "2022-03-01 21:00:00"},
 
-        {name:'Historico'},
+        {name:'Historico',
+        "createdAt": "2022-02-01 21:00:00",
+        "updatedAt": "2022-03-01 21:00:00"},
 
-        {name:'Romance'},
+        {name:'Romance',
+        "createdAt": "2022-02-01 21:00:00",
+        "updatedAt": "2022-03-01 21:00:00"},
 
-        {name:'Ficcion'},
+        {name:'Ficcion',
+        "createdAt": "2022-02-01 21:00:00",
+        "updatedAt": "2022-03-01 21:00:00"},
 
-        {name:'Teatro'},
+        {name:'Teatro',
+        "createdAt": "2022-02-01 21:00:00",
+        "updatedAt": "2022-03-01 21:00:00"},
 
-        {name:'Filosofia'},
+        {name:'Filosofia',
+        "createdAt": "2022-02-01 21:00:00",
+        "updatedAt": "2022-03-01 21:00:00"},
 
-        {name:'Fantasia'},
+        {name:'Fantasia',   "createdAt": "2022-02-01 21:00:00",
+        "updatedAt": "2022-03-01 21:00:00"},
 
-        {name:'Comedia'},
+        {name:'Comedia',
+        "createdAt": "2022-02-01 21:00:00",
+        "updatedAt": "2022-03-01 21:00:00"},
 
-        {name:'Autoayuda'},
+        {name:'Autoayuda', 
+          "createdAt": "2022-02-01 21:00:00",
+        "updatedAt": "2022-03-01 21:00:00"},
 
       
       ], {});

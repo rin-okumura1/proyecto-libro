@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       //user tiene muchos favoritos (categorias)
       User.belongsToMany(models.category, { through: 'CategoriesByUsers'});
       //user tiene muchos favoritos (lenguajes)
-      User.belongsToMany(models.lenguages,  { through: 'LanguagesByUsers'});
+      User.belongsToMany(models.language,  { through: 'LanguagesByUsers'});
       // un user tieene penalidades
       User.hasOne(models.Penalty);
       //  Un User puede tener muchos rentals

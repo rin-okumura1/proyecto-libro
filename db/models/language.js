@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       Language.hasMany(models.book);
 
       //un lenguage tiene varios usuarios que lo prefieres
-      Language.belongsToMany(models.Users);
+      Language.belongsToMany(models.Users,  { through: 'LanguagesByUsers'});
     }
   }
   Language.init({
