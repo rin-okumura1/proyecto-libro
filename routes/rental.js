@@ -103,7 +103,8 @@ router.put('/:id', async function(req, res) {
          if (rental){//  cambie el estado de book
           books.changeAvailability(rental.bookId,AVAILABLE)  // paso a disponible
           dateExpect= date.setFormatDateToExpect(rental.dateToExpect)
-          result = date.getDateNow > dateExpect
+          result = await date.getDateNow() > dateExpect
+          
         if (result ){
           await penalties.generarPenalidad(userId)
         } 
