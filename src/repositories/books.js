@@ -58,10 +58,6 @@ const getAllBooks = async (params = {}) => {
 
 
 //Para la búsqueda de un libro por id
-/* const getBookById = async (id) => {
-    return await book.findByPk(id, query);
-}; */
-
 const getBookById = async (bookId) => {
     return await book.findOne({
         where: {
