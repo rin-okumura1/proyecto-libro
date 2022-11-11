@@ -86,20 +86,7 @@ async function updatedDateToReal (rentalId,dateToReal){
   )
 }
 
-/*async function upsert(dateToReal, rentalId) {
-  return await Rental
-      .findOne({ where: rentalId })
-      .then(function(obj) {
-          // update
-          if(obj)
-              return obj.update(dateToReal);
-          // insert
-          //return Model.create(values);
-          console.log(obj)
-        })
-       
-      
-}*/
+
 
 module.exports = {
   getById,
