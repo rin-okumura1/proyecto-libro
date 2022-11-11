@@ -12,24 +12,27 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // Un User pertenece a un único statusId de la entidad Status
       User.belongsTo(models.Status);
-
       // Un User publica muchos Books para vender/intercambiar
       User.hasMany(models.book);
-
-       //user tiene muchos favoritos (autores)
-       User.belongsToMany(models.author,  { through: 'AuthorsByUsers' });
-       //user tiene muchos favoritos (categorias)
-       User.belongsToMany(models.category, { through: 'CategoriesByUsers'});
-       //user tiene muchos favoritos (lenguajes)
-       User.belongsToMany(models.lenguages,  { through: 'LanguagesByUsers'});
-
+      //user tiene muchos favoritos (autores)
+      User.belongsToMany(models.author,  { through: 'AuthorsByUsers' });
+      //user tiene muchos favoritos (categorias)
+      User.belongsToMany(models.category, { through: 'CategoriesByUsers'});
+      //user tiene muchos favoritos (lenguajes)
+      User.belongsToMany(models.lenguages,  { through: 'LanguagesByUsers'});
+      // un user tieene penalidades
+      User.hasOne(models.Penalty);
+      //  Un User puede tener muchos rentals
+      User.hasMany(models.Rental);
     }
   }
   User.init({
     name: {
       type: DataTypes.STRING(100),
       allowNull: false
+
     },
+      
     surname: {
       type: DataTypes.STRING(100),
       allowNull: false
@@ -44,12 +47,21 @@ module.exports = (sequelize, DataTypes) => {
     },
     score: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
+      defaultValue: 0
     },
     statusId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 2
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: Date.now()
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: Date.now()
     }
   }, {
     sequelize,
