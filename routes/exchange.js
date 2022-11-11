@@ -4,7 +4,7 @@ var dateNow = require('../src/repositories/date');
 var exchange = require('../src/repositories/exchange')
 var users = require('../src/repositories/users')
 var books = require('../src/repositories/books')
-const NOTAVAILABLE=2
+
 
 
 
@@ -37,27 +37,31 @@ router.post('/', async function (req, res, next) {
    
    dateNowExchange = await  dateNow.getDateNow()
  
-  console.log(bookId1);
+ 
     try {
         if(data) {
-         console.log("primeraValidacion");
-          if(!req.body.bookId1 || !req.body.bookId2) {
+         
+          if(!bookId1 || !bookId2) {
             throw new Error('BAD_REQUEST')
           }
+
+          // llamar metodo que valide que los libros no tengna el mismo user id.
+          
           // validar libro 1
           
-          await dataValidation(req.body.bookId1)
+          await dataValidation(bookId1)
 
           // validar libro 2 
           
-          await dataValidation(req.body.bookId2)
+          await dataValidation(bookId2)
 
-          
+        
             let saved = await exchange.saveExchange(bookId1, bookId2, dateNowExchange);
 
             if (saved){  // cambiar estado de book
-              books.changeAvailability(bookId1,NOTAVAILABLE)
-              books.changeAvailability(bookId2,NOTAVAILABLE)
+              
+              // intercambiar los usariosid de los libros
+              // exchangesUserAndBooks(bookId1, BookId2)
             }
             res.status(201).json(saved);
         }
@@ -75,13 +79,13 @@ router.post('/', async function (req, res, next) {
     }
 
     if ( (! await  books.isAvailable(bookFound.id))) {  // si book esta disponible
-     console.log("entro");
       throw new Error("BOOK_DON'T_AVAILABLE")
     }
     
-    if ( (! await  users.isEnable(bookFound.userId))) { // si esta disponible el usuario que intercambia
+    if ( (! await  users.isEnable(bookFound.userId))) { // si esta disponible los usuario que intercambian
       throw new Error("USER_DON'T_ENABLE")
     }
+    
     
   
 };
