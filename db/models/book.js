@@ -27,8 +27,16 @@ module.exports = (sequelize, DataTypes) => {
       // Un Book pertenece a un User
       Book.belongsTo(models.Users);
 
-      //Un libro pertenece a muchos Rental
+      // Un book tiene muchos Exchange
+      
+      Book.hasMany (models.Exchange, {foreignKey: "bookId1"});
+      Book.hasMany (models.Exchange, {foreignKey: "bookId2"});
+      
+      
+            //Un libro pertenece a muchos Rental
       Book.hasMany(models.Rental);
+
+
     }
   }
   Book.init({
