@@ -85,23 +85,23 @@ dateNow=await date.getDateNow()
 
 /*PUT*/
 router.put('/:id', async function(req, res) {
-  let rentalId =  req.params.id;
-  let rental = await Rental.getById(rentalId)
-  let dateToReal = req.body.dateToReal
+
+  let rental = await Rental.getById(req.params.id)
+  let dateToReal = req.body.dateToReal  
   let userId= rental.userId
   dateNow= await date.getDateNow()
   
   try {
     if(rental) {
 
-      if ( dateToReal != dateNow || !dateToReal) { 
+      if ( dateToReal != dateNow || !dateToReal) {  // que el dia ingrasado coincida con el dia actual
         return res.status(400).json({message:"INVALID_DATE_TO_REAL"})
       }
-         await Rental.updatedDateToReal(rentalId,dateToReal);
-         rental= await Rental.getById(rentalId)
+         await Rental.updatedDateToReal(rental.id,dateToReal);
+         rental= await Rental.getById(rental.id) // se busca el rental actualizado
          
-         if (rental){// si saved da true, hay que pedirle a status que cambie el estado de book
-          books.changeAvailability(rental.bookId,AVAILABLE)
+         if (rental){//  cambie el estado de book
+          books.changeAvailability(rental.bookId,AVAILABLE)  // paso a disponible
           dateExpect= date.setFormatDateToExpect(rental.dateToExpect)
           result = date.getDateNow > dateExpect
         if (result ){

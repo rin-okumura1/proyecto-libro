@@ -1,4 +1,4 @@
-
+const CANT_DAY =5;
 // OBTENEMOS FECHA ACTUAL
 async function getDateNow() {
 
@@ -18,9 +18,9 @@ return await formattedToday
 
 // SETEAMOS LA FECHA DE PENALIDAD COMUN
 function getDateForPenalty() {
-
+    
     const today = new Date();
-    today.setDate(today.getDate()+5)
+    today.setDate(today.getDate()+ CANT_DAY)
     const yyyy = today.getFullYear();
     let mm = today.getMonth() + 1; // Mes comienza en 0
     let dd = today.getDate();
@@ -37,7 +37,7 @@ function getDateForPenalty() {
 function updateDateForPenalty(dateTo) {
        
     const today = dateTo;
-    today.setDate(today.getDate()+5)
+    today.setDate(today.getDate()+CANT_DAY)
     const yyyy = today.getFullYear();
     let mm = today.getMonth() + 1; // Mes comienza en 0
     let dd = today.getDate();

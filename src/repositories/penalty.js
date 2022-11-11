@@ -3,6 +3,7 @@ var userRep = require('./users')
 
 var date= require('./date')
 const DISABLE =1;
+const MAX_PENALTY = 10;
 
 
 const getAll = async (params = {}) => {
@@ -38,7 +39,7 @@ async function generarPenalidad(userId){
     if (!penalty){  // si no existe registro de sanciones
         penalty=createPenalty(userId)
     } 
-    if (penalty.cantPenalty<10){  // si la penalidad es menor a 10
+    if (penalty.cantPenalty<MAX_PENALTY){  // si la penalidad es menor a 10
         if (dateToPenalty <= dateNow){ // fecha vencida 
             updatedPenalty(penalty.id, penalty.cantPenalty)
        } else {  // fecha vigente
@@ -46,10 +47,8 @@ async function generarPenalidad(userId){
         updatedPenalty(penalty.id, penalty.cantPenalty, dateToPenalty )
        }
     } else {    // si la penalidad es mayor a 10 se cambia el status del usuario
-        console.log("si es mayor a 10 cantpenalty")
         let user = await userRep.getById(userId)
-        console.log(user.id);
-        console.log(user.cantPenalty)
+      
         userRep.changeStatus(user.id,DISABLE)
         
       
@@ -69,11 +68,10 @@ let dateTo = date.getDateForPenalty()
 
 }
 async function updatedPenalty (penaltyId, cantPenalty, dateTo){
-    console.log("ingresando al update Penalty")
-    console.log(dateTo)
+    
 
     if (!dateTo) {
-        let dateTo= date.getDateForPenalty()
+        dateTo= date.getDateForPenalty()
     }
     cantPenalty ++
     return await Penalty.update(
