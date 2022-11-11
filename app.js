@@ -10,7 +10,7 @@ var booksRouter   = require('./routes/books');
 var authorsRouter = require('./routes/authors');
 var exchangeRouter = require('./routes/exchange');
 var rentalRouter = require('./routes/rental');
-
+var usersRouter = require ('./routes/Users');
 var app = express();
 
 // view engine setup
@@ -31,6 +31,7 @@ app.use('/authors', authorsRouter);
 app.use('/penalty', penaltyRouter);
 app.use('/exchange', exchangeRouter);
 app.use('/rental', rentalRouter);
+app.use('/Users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
