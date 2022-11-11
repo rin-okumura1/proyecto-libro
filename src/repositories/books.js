@@ -162,15 +162,11 @@ const deleteBook = async (bookId) => {
 
 const changeAvailability = async (bookId, availabilityId) =>{
 
-    console.log("estoy en el change");
-    console.log(bookId);
-    console.log(availabilityId)
     let bookFound = await book.findOne({
         where: {
             id: bookId
         }
     });
-
     if(bookFound) {
         return await book.update({
             availabilityId
@@ -181,8 +177,6 @@ const changeAvailability = async (bookId, availabilityId) =>{
             }
         })
     };
-
-
 }
 
 module.exports = {

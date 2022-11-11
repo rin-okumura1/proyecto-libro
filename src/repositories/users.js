@@ -7,6 +7,7 @@ async function getAll() {
 }
 
 async function getById(userId) {
+  
   return await Users.findOne({
     where: {
       id:userId
@@ -59,6 +60,24 @@ const isEnable = async (userId) => {
   const {statusId} = userFound;
   return await statusId == ENABLE;
 }
+const changeStatus = async (userId, statusId) =>{
+
+  console.log("estoy en el change Status");
+  console.log(userId);
+  console.log(statusId)
+  let userFound = await getById(userId)
+
+  if(userFound) {
+      return await Users.update({
+          statusId
+      },
+      {
+          where: {
+              id:userId
+          }
+      })
+  };
+}
 
 module.exports={
     getById,
@@ -67,4 +86,5 @@ module.exports={
     saveUser,
     updateUser,
     isEnable,
+    changeStatus,
 }
