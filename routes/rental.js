@@ -4,7 +4,8 @@ var Rental = require('../src/repositories/rental')
 var users = require('../src/repositories/users')
 var books = require('../src/repositories/books')
 var date = require('../src/repositories/date');
-
+const AVAILABLE = 1
+const NOTAVAILABLE=2
 
 
 
@@ -57,8 +58,10 @@ dateNow=date.getDate()
         }
 
           let saved = await Rental.saveRental(userId, bookId,dateFrom , dateToExpect);
+
+          console.log(saved);
           if (saved){  // si saved da true, hay que pedirle a status que cambie el estado de book
-            books.changeAvailability(bookId)
+            books.changeAvailability(bookId,NOTAVAILABLE)
           }
           res.status(201).json(saved);
       }
@@ -72,6 +75,7 @@ dateNow=date.getDate()
 router.put('/:id', async function(req, res) {
   let rentalId =  req.params.id;
   let rental = await Rental.getById(rentalId)
+  
   let dateToReal = req.body.dateToReal
   dateNow=date.getDate()
   
@@ -80,8 +84,15 @@ router.put('/:id', async function(req, res) {
       if ( dateToReal != dateNow || !dateToReal) { 
         return res.status(400).json({message:"INVALID_DATE_TO_REAL"})
       }
+          
          await Rental.updatedDateToReal(rentalId,dateToReal);
          rental= await Rental.getById(rentalId)
+         
+         if (rental){// si saved da true, hay que pedirle a status que cambie el estado de book
+          console.log("el if del rental para cambiar estado de libro date to real");
+          console.log(rental.bookId);
+          books.changeAvailability(rental.bookId,AVAILABLE)
+         }
         res.status(201).json(rental);
     }
 }catch(error) {

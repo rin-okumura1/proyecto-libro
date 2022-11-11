@@ -160,9 +160,11 @@ const deleteBook = async (bookId) => {
 
 // cambiar disponibilidad de libro
 
-const changeAvailability = async (bookId) =>{
+const changeAvailability = async (bookId, availabilityId) =>{
 
     console.log("estoy en el change");
+    console.log(bookId);
+    console.log(availabilityId)
     let bookFound = await book.findOne({
         where: {
             id: bookId
@@ -171,7 +173,7 @@ const changeAvailability = async (bookId) =>{
 
     if(bookFound) {
         return await book.update({
-            availabilityId:2
+            availabilityId
         },
         {
             where: {

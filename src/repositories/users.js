@@ -6,8 +6,12 @@ async function getAll() {
   return await Users.findAll({include:[Status]})
 }
 
-async function getById(id) {
-  return await Users.findByPk(id)
+async function getById(userId) {
+  return await Users.findOne({
+    where: {
+      id:userId
+    }
+  });
 }
 
 async function saveUser(dataNewUser) {
