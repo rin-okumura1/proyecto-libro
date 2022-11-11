@@ -6,7 +6,7 @@ async function getAll() {
 }
 
 async function getById(id) {
-  return await Users.findByPk(id)
+  return await Users.findOne(id)
 }
 
 async function saveUser(dataNewUser) {
