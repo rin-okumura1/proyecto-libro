@@ -1,8 +1,11 @@
 var express = require('express'); 
 var router = express.Router(); 
-var exchange = require('../src/repositories/exchange')
-var books = require('../src/repositories/books')
 var dateNow = require('../src/repositories/date');
+var exchange = require('../src/repositories/exchange')
+var users = require('../src/repositories/users')
+var books = require('../src/repositories/books')
+const NOTAVAILABLE=2
+
 
 
 
@@ -31,31 +34,57 @@ router.post('/', async function (req, res, next) {
 
   let data= req.body;
   const { bookId1, bookId2 } = data;
-    console.log(data)
-  
-   dateNowExchange =  dateNow.getDate()
- console.log(dateNowExchange)
-  
+   
+   dateNowExchange = await  dateNow.getDateNow()
+ 
+  console.log(bookId1);
     try {
         if(data) {
-          console.log("entrando al data" + data)
-          // BOOK ID EXISTA
-          if (! await  books.getBookById(req.body.bookId1) || !req.body.bookId1 ) { 
-            return res.status(400).json({message:"book1 is undefined"})
+         console.log("primeraValidacion");
+          if(!req.body.bookId1 || !req.body.bookId2) {
+            throw new Error('BAD_REQUEST')
           }
-  
-          if (! await  books.getBookById(req.body.bookId2) || !req.body.bookId2 ) { 
-            return res.status(400).json({message:"book2 is undefined"})
-          }
-          console.log("pase los if")
-
-        
-            let saved = await exchange.saveExchange(bookId1, bookId2, dateNowExchange);
+          // validar libro 1
           
+          await dataValidation(req.body.bookId1)
+
+          // validar libro 2 
+          
+          await dataValidation(req.body.bookId2)
+
+          
+            let saved = await exchange.saveExchange(bookId1, bookId2, dateNowExchange);
+
+            if (saved){  // cambiar estado de book
+              books.changeAvailability(bookId1,NOTAVAILABLE)
+              books.changeAvailability(bookId2,NOTAVAILABLE)
+            }
             res.status(201).json(saved);
         }
     }catch(error) {
-        res.status(400).json({message: error});
+        res.status(400).json({message: error.message});
     }
   });
+
+  async function dataValidation (bookId) {
+    
+    let bookFound =  await  books.getBookById(bookId)
+    
+    if ( ! bookFound ) {  // si existe libro 
+      throw new Error("BOOK_IS_UNDEFINED")
+    }
+
+    if ( (! await  books.isAvailable(bookFound.id))) {  // si book esta disponible
+     console.log("entro");
+      throw new Error("BOOK_DON'T_AVAILABLE")
+    }
+    
+    if ( (! await  users.isEnable(bookFound.userId))) { // si esta disponible el usuario que intercambia
+      throw new Error("USER_DON'T_ENABLE")
+    }
+    
+  
+};
+
+    
 module.exports = router;
