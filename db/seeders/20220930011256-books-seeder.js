@@ -13,7 +13,7 @@ module.exports = {
           synopsis:
             "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. masa aeneana. Cum sociis natoque penatibus et",
           availabilityId: 1,
-          userId: 13,
+          userId: 1,
           createdAt: "2022-01-01 22:58:01",
           updatedAt: "2022-01-01 22:58:01",
         },
@@ -26,7 +26,7 @@ module.exports = {
           synopsis:
             "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. masa aeneana. Cum sociis natoque penatibus et",
           availabilityId: 1,
-          userId: 13,
+          userId: 2,
           createdAt: "2022-01-01 22:58:01",
           updatedAt: "2022-01-01 22:58:01",
         },
@@ -39,7 +39,7 @@ module.exports = {
           synopsis:
             "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. masa aeneana. Cum sociis natoque penatibus et",
           availabilityId: 1,
-          userId: 18,
+          userId: 1,
           createdAt: "2022-01-01 22:58:01",
           updatedAt: "2022-01-01 22:58:01",
         },
@@ -52,7 +52,7 @@ module.exports = {
           synopsis:
             "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. masa aeneana. Cum sociis natoque penatibus et",
           availabilityId: 1,
-          userId: 14,
+          userId: 5,
           createdAt: "2022-01-01 22:58:01",
           updatedAt: "2022-01-01 22:58:01",
         },
@@ -65,7 +65,7 @@ module.exports = {
           synopsis:
             "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. masa aeneana. Cum sociis natoque penatibus et",
           availabilityId: 1,
-          userId: 15,
+          userId: 6,
           createdAt: "2022-01-01 22:58:01",
           updatedAt: "2022-01-01 22:58:01",
         },
@@ -78,7 +78,7 @@ module.exports = {
           synopsis:
             "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. masa aeneana. Cum sociis natoque penatibus et",
           availabilityId: 1,
-          userId: 16,
+          userId: 6,
           createdAt: "2022-01-01 22:58:01",
           updatedAt: "2022-01-01 22:58:01",
         },
@@ -91,7 +91,7 @@ module.exports = {
           synopsis:
             "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. masa aeneana. Cum sociis natoque penatibus et",
           availabilityId: 1,
-          userId: 17,
+          userId: 4,
           createdAt: "2022-01-01 22:58:01",
           updatedAt: "2022-01-01 22:58:01",
         },
@@ -104,7 +104,7 @@ module.exports = {
           synopsis:
             "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. masa aeneana. Cum sociis natoque penatibus et",
           availabilityId: 1,
-          userId: 14,
+          userId: 1,
           createdAt: "2022-01-01 22:58:01",
           updatedAt: "2022-01-01 22:58:01",
         },

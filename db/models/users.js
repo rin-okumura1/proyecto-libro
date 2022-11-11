@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       // Un user pertenece a un único statusId de la entidad Status
       User.belongsTo(models.Status);
 
-      // Un User tiene muchos Books
+      // Un User puede tener muchos Books relacionados consigo mismo
       User.hasMany(models.book);
 
       //  Un User puede tener muchos rentals
