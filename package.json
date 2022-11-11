@@ -15,10 +15,7 @@
     "mocha": "^10.1.0",
     "morgan": "~1.9.1",
     "mysql2": "^2.3.3",
-    "sequelize": "^6.23.1",
-    "supertest": "^6.3.0"
-  },
-  "devDependencies": {
-    "sequelize-cli": "^6.4.1"
+    "sequelize": "^6.23.2",
+    "sequelize-cli": "^6.5.1"
   }
 }

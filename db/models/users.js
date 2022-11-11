@@ -10,11 +10,18 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // Un user pertenece a un único statusId de la entidad Status
+      // Un User pertenece a un único statusId de la entidad Status
       User.belongsTo(models.Status);
 
-      // Un user puede pertenecer a muchos Books relacionados consigo mismo
-      User.hasMany(models.book)
+      // Un User tiene muchos Books
+      User.hasMany(models.book);
+
+      // un user tieene penalidades
+      User.hasOne(models.Penalty);
+
+      //  Un User puede tener muchos rentals
+      User.hasMany(models.Rental);
+      
     }
   }
   User.init({
