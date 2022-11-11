@@ -11,7 +11,7 @@ var date = require('../src/repositories/date');
 
 /* GET home page. */
 router.get('/', async function(req, res, next) {
-  res.json(await rental.getAll());
+  res.json(await Rental.getAll());
 });
 
 router.get('/:id', async function(req, res) {
