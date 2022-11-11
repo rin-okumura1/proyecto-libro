@@ -22,7 +22,12 @@ async function getByName(categoryName){
     )
 }
 
+const getCategoryById = async (id) => {
+    return await category.findByPk(id);
+};
+
 module.exports={
     getAllByUser,
-    getByName
+    getByName,
+    getCategoryById
 }
