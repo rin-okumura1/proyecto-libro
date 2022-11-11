@@ -3,8 +3,11 @@ var router = express.Router();
 var Rental = require('../src/repositories/rental')
 var users = require('../src/repositories/users')
 var books = require('../src/repositories/books')
-var date = require('../src/repositories/date')
+var date = require('../src/repositories/date');
 var penalties = require('../src/repositories/penalty')
+const AVAILABLE = 1
+const NOTAVAILABLE=2
+
 
 
 
@@ -15,15 +18,14 @@ router.get('/', async function(req, res, next) {
   res.json(await Rental.getAll());
 });
 
+
+//GET POR ID
 router.get('/:id', async function(req, res) {
-  //res.json(await penalty.getById(req.params.id));
   let alquiler =  await Rental.getById(req.params.id)
-    
   if (alquiler){
     return res.json(alquiler)
   }
   res.status(404).end()
-  
 });
 
 /*POST */
@@ -36,20 +38,27 @@ dateNow=await date.getDateNow()
   try {
       if(data) {
 
-        if (! await  users.getById(req.body.userId) || !req.body.userId ) { 
-          return res.status(400).json({message:"is undefined"})
+        if (! await  users.getById(req.body.userId) || !req.body.userId ) {  // si user existe y si userid no esta vacio
+          return res.status(400).json({message:"BAD_REQUEST"})
         }
 
-        if (! await  books.getBookById(req.body.bookId) || !req.body.bookId ) { 
-          return res.status(400).json({message:"book is undefined"})
+        if (! await  books.getBookById(req.body.bookId) || !req.body.bookId ) { // si book existe y si bookid no esta vacio
+          return res.status(400).json({message:"BAD_REQUEST"})
         }
 
-        if ( dateFrom < dateNow || !req.body.dateFrom) { 
-          return res.status(400).json({message:"bad dateFrom"})
+        if ( dateFrom < dateNow || !req.body.dateFrom) {    // si desde que fecha es menor del dia actual
+          return res.status(400).json({message:"INVALID_DATE_FROM"})
         }
 
-        if ( (dateToExpect < dateNow && dateToExpect < dateFrom )|| !req.body.dateToExpect) { 
-          return res.status(400).json({message:"bad dateToExpect"})
+        if ( (dateToExpect < dateNow && dateToExpect < dateFrom )|| !req.body.dateToExpect) { // si la fecha esperada es menor que la actual y menor que desde
+          return res.status(400).json({message:"INVALID_DATE_TO_EXPECT"})
+        }
+
+        if ( (! await  users.isEnable(req.body.userId))) { // si user esta disponible
+          return res.status(400).json({message:"USER_DON'T_ENABLE"})
+        }
+        if ( (! await  books.isAvailable(req.body.bookId))) {  // si book esta disponible
+          return res.status(400).json({message:"BOOK_DON'T_AVAILABLE"})
         }
         // si usuario no tiene fecha vigente de sancion
 
@@ -59,7 +68,13 @@ dateNow=await date.getDateNow()
         if (datePenalty > dateNow){
           return res.status(400).json({message:" penalty valid"})
         }
+
           let saved = await Rental.saveRental(userId, bookId,dateFrom , dateToExpect);
+
+          console.log(saved);
+          if (saved){  // si saved da true, hay que pedirle a status que cambie el estado de book
+            books.changeAvailability(bookId,NOTAVAILABLE)
+          }
           res.status(201).json(saved);
       }
   }catch(error) {
@@ -71,6 +86,8 @@ dateNow=await date.getDateNow()
 /*PUT*/
 router.put('/:id', async function(req, res) {
   let rentalId =  req.params.id;
+  let rental = await Rental.getById(rentalId)
+  
   let dateToReal = req.body.dateToReal
   let rentalObj = await Rental.getRentalByIdObj(rentalId)
   let userId= rentalObj.userId
@@ -79,10 +96,17 @@ router.put('/:id', async function(req, res) {
   try {
     if(rentalObj) {
       if ( dateToReal != dateNow || !dateToReal) { 
-        return res.status(400).json({message:"bad dateToReal"})
+        return res.status(400).json({message:"INVALID_DATE_TO_REAL"})
       }
-        let update = await Rental.updatedDateToReal(rentalId,dateToReal);
-        rentalObj= await Rental.getById(rentalId)
+          
+         await Rental.updatedDateToReal(rentalId,dateToReal);
+         rentalObj= await Rental.getById(rentalId)
+         
+         if (rental){// si saved da true, hay que pedirle a status que cambie el estado de book
+          console.log("el if del rental para cambiar estado de libro date to real");
+          console.log(rental.bookId);
+          books.changeAvailability(rental.bookId,AVAILABLE)
+         }
         if (update==1){
           dateExpect= date.setFormatDateToExpect(rentalObj.dateToExpect)
           result = date.getDateNow > dateExpect
