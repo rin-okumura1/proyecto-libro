@@ -179,6 +179,28 @@ const changeAvailability = async (bookId, availabilityId) =>{
     };
 }
 
+async function exchangesUserAndBooks(bookId1,bookId2){
+
+let bookOne = await getBookById(bookId1)
+let bookTwo = await getBookById(bookId2)
+
+       await setUserId(bookId1,bookTwo.userId)
+return  await setUserId(bookId2,bookOne.userId)
+
+}
+
+async function setUserId(bookId,userId){
+return await book.update({
+    userId
+},
+{
+    where: {
+        id: bookId
+    }
+})
+}
+
+
 module.exports = {
     getBookById,
     getAllBooks,
@@ -187,4 +209,5 @@ module.exports = {
     deleteBook,
     isAvailable,
     changeAvailability,
+    exchangesUserAndBooks,
 }

@@ -44,24 +44,23 @@ router.post('/', async function (req, res, next) {
           if(!bookId1 || !bookId2) {
             throw new Error('BAD_REQUEST')
           }
-
-          // llamar metodo que valide que los libros no tengna el mismo user id.
           
+          if ( await users.isEqualUser(bookId1,bookId2)){
+            throw new Error('ERROR_SAME_USERS')
+          }
           // validar libro 1
-          
           await dataValidation(bookId1)
 
           // validar libro 2 
-          
           await dataValidation(bookId2)
 
         
             let saved = await exchange.saveExchange(bookId1, bookId2, dateNowExchange);
 
-            if (saved){  // cambiar estado de book
+            if (saved){  // 
               
               // intercambiar los usariosid de los libros
-              // exchangesUserAndBooks(bookId1, BookId2)
+              await books.exchangesUserAndBooks(bookId1, bookId2)
             }
             res.status(201).json(saved);
         }
@@ -89,6 +88,8 @@ router.post('/', async function (req, res, next) {
     
   
 };
+
+
 
     
 module.exports = router;
