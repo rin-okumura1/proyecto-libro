@@ -10,11 +10,7 @@ var languages = require('../src/repositories/languages');
 
 async function bookValidation (dataBook) {
 
-    const {authorId, editionYear, title, categoryId, languageId, synopsis, userId, price } = dataBook;
-
-    if (!userId || ! await users.getById(userId)) { 
-        throw new Error('USER_DOES_NOT_EXIST')
-      }
+    const {authorId, editionYear, title, categoryId, languageId, synopsis, price } = dataBook;
 
     if (!authorId || ! await authors.getAuthorById(authorId)) { 
         throw new Error('AUTHOR_DOES_NOT_EXIST')
@@ -43,6 +39,16 @@ async function bookValidation (dataBook) {
     if (price <= 0) { 
         throw new Error('INVALID_PRICE')
     }
+}
+
+async function userValidation(dataBook) {
+
+    const { userId } = dataBook;
+
+
+    if (!userId || ! await users.getById(userId)) { 
+        throw new Error('USER_DOES_NOT_EXIST')
+    };
 }
 
 
@@ -91,13 +97,13 @@ router.get('/:bookId', async (req, res) => {
 router.post('/', async function (req, res, next) {
 
     let dataNewBook = req.body;
-    
     try {
-        if(!dataNewBook) {
+        if(Object.keys(dataNewBook).length === 0) {
             throw new Error('BAD_REQUEST')
         }
 
         await bookValidation(dataNewBook);
+        await userValidation(dataNewBook);
         
         const {authorId, editionYear, title, categoryId, languageId, synopsis, userId, price } = dataNewBook;
         let createdBook = await books.createBook(authorId, editionYear, title, categoryId, languageId, synopsis, userId, price);
@@ -115,7 +121,7 @@ router.put('/:bookId', async function (req, res, next) {
     let bookToModify = await books.getBookById(bookId)
     let dataToModifyBook = req.body;
     try {
-        if(!bookToModify || !dataToModifyBook) {
+        if(!bookToModify || Object.keys(dataToModifyBook).length === 0) {
             throw new Error('BAD_REQUEST')
         }
         

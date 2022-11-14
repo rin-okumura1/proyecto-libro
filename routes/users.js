@@ -58,7 +58,7 @@ router.post('/', async function (req, res, next) {
   let dataNewUser = req.body;
 
   try {
-    if(!dataNewUser) {
+    if(Object.keys(dataNewUser).length === 0) {
       throw new Error('BAD_REQUEST');
     }
     
@@ -82,7 +82,7 @@ router.put('/:id', async function (req, res, next) {
   let theUser = await users.getById(userId);
 
   try {
-    if(!theUser || !newDataUser) {
+    if(!theUser || Object.keys(newDataUser).length === 0) {
       throw new Error('BAD_REQUEST');
     }
     
