@@ -66,10 +66,6 @@ dateNow=await date.getDateNow()
         if ( (! await  books.isAvailable(req.body.bookId))) {  // si book esta disponible
           return res.status(400).json({message:"BOOK_DON'T_AVAILABLE"})
         }
-
-        if ( (! await  books.isAvailable(req.body.bookId))) {  // si book esta disponible
-          return res.status(400).json({message:"BOOK_DON'T_AVAILABLE"})
-        }
         
         if( (! await rentalPrice.getRentalPriceByIdBook(req.body.bookId))) { // si book es rentable
           return res.status(400).json({message:"BOOK_IS_NOT_A_RENT"})
@@ -78,8 +74,6 @@ dateNow=await date.getDateNow()
        
         // si usuario  tiene fecha vigente de sancion
         let penalty = await penalties.getById(req.body.userId)
-        
-
         if (penalty){
           let datePenalty = date.setFormatDateToExpect(penalty.dateTo)
           if (datePenalty > dateNow){
