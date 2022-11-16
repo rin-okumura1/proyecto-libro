@@ -4,7 +4,7 @@ const app = require('../app')
 
 
 describe('Rental', function() {
-    describe('Registrar un intercambio', function() {
+    describe('Registrar una renta', function() {
 
         it('Requiere el usuario exista', function(done) {
 
@@ -200,4 +200,52 @@ describe('Rental', function() {
         
 
 })
+
+describe('Confirmar la devolucion de la renta', function() {
+
+    it('Se requiere que el dateToReal coincida con el dia actual', function(done) {
+
+        request(app)
+            .put('/rental/43')
+            .send(
+                {
+                
+                    "dateToReal":"2022-11-15"
+                    
+                  }
+            )
+            .expect(400)
+            .end(function(err, res) {
+                assert.equal(res.body.message, 'INVALID_DATE_TO_REAL')
+                if(err)  done(err);
+                return done();
+            })
+        }) 
+
+    //-----------------------------------------------------------------------------
+    
+    it('Se requiere que el dateToReal coincida con el dia actual', function(done) {
+
+        request(app)
+            .put('/rental/43')
+            .send(
+                {
+                
+                    "dateToReal":"2022-11-15"
+                    
+                  }
+            )
+            .expect(400)
+            .end(function(err, res) {
+                assert.equal(res.body.message, 'INVALID_DATE_TO_REAL')
+                if(err)  done(err);
+                return done();
+            })
+        }) 
+
 })
+});
+
+
+
+    
