@@ -51,6 +51,14 @@ async function userValidation(dataBook) {
     };
 }
 
+async function nonEditableFieldValidate(dataBook) {
+    const { userId } = dataBook;
+  
+    if(userId){
+      throw new Error("USER_DATA_DOESN'T_EDITABLE");
+    }
+  };
+
 
 //Devuelve todos los registros de Libros almacenados en la DB, y puede filtrar los resultados encontrados, de acuerdo al Title y Language
 router.get('/', async function (req, res, next) {
@@ -130,6 +138,7 @@ router.put('/:bookId', async function (req, res, next) {
         }
         
         await bookValidation(dataToModifyBook);
+        await nonEditableFieldValidate(dataToModifyBook);
 
         let updatedBook = await books.updateBook(bookId, dataToModifyBook);
         res.status(200).json(updatedBook);
