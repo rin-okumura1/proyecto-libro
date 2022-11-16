@@ -1,12 +1,58 @@
-const {Exchange} = require ('../../db/models')
+const {Exchange,book, sequelize} = require ('../../db/models')
 
-async function getById(id){
-    return await Exchange.findByPk(id)
+
+const getById = async (id) => {
+    return await Exchange.findByPk(id,{
+        attributes: { exclude: ["id"] },
+      include: [
+        {
+          model: book,
+          as: "Book1",
+          attributes: ["id", "title"],
+        },
+        {
+          model: book,
+          as: "Book2",
+          attributes: ["id", "title"],
+        },
+      ]
+        
+    })
 }
-async function getAll(){
-    return await Exchange.findAll()
-}
+
+const getAll = async (params = {}) => {
+    let query = {
+      where: {},
+      attributes: { exclude: ["id"] },
+      include: [
+        {
+          model: book,
+          as: "Book1",
+          attributes: ["id", "title"],
+        },
+        {
+          model: book,
+          as: "Book2",
+          attributes: ["id", "title"],
+        },
+      ],
+    };
+    return await Exchange.findAll(query);
+  };
+
+  async function saveExchange( bookId1,bookId2, date) {
+    return await Exchange.create({
+      
+      bookId1,
+      bookId2,
+       date
+    })
+  }
+  
+ 
+
 module.exports = {
     getById, 
     getAll,
+    saveExchange
 }

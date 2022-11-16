@@ -2,21 +2,11 @@ const { Rental, book, Users, category } = require("../../db/models");
 const { Op } = require("sequelize");
 
 // Obtiene un registro de libro alquilado
-async function getById(id) {
-  return await Rental.findByPk(id, {
-    attributes: {
-      exclude: ["bookId", "userId", "UserId", "createdAt", "updatedAt"],
-    },
-    include: [
-      {
-        model: book,
-        attributes: ["id", "title"],
-      },
-      {
-        model: Users,
-        attributes: ["id", "name", "surname", "email"],
-      },
-    ],
+async function getById(RentalId) {
+  return await Rental.findOne({
+    where: {
+      id:RentalId
+    }
   });
 }
 
@@ -64,6 +54,7 @@ async function getAll(params = {}) {
 }
 
 async function saveRental(userId, bookId,dateFrom , dateToExpect) {
+  console.log("entre al save");
   return await Rental.create({
     userId, 
     bookId,
@@ -74,6 +65,8 @@ async function saveRental(userId, bookId,dateFrom , dateToExpect) {
 }
 
 async function updatedDateToReal (rentalId,dateToReal){
+
+  
   return await Rental.update(
     {
       dateToReal: dateToReal
@@ -86,23 +79,12 @@ async function updatedDateToReal (rentalId,dateToReal){
   )
 }
 
-async function getRentalByIdObj(rentalId){
-  return await Rental.findOne({
-    where: {
-      id: rentalId
-    }
-  })
-}
-
-
-
 
 
 module.exports = {
   getById,
   getAll,
   saveRental,
-  updatedDateToReal,
-  getRentalByIdObj
+  updatedDateToReal
  
 };
