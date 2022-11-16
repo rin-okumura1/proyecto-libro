@@ -1,6 +1,43 @@
 const { assert } = require('chai')
 const request = require('supertest')
 const app = require('../app')
+const { book, rentalPrice } = require('../db/models')
+
+const createBook = async (price) => {
+    const createdBook = await book.create({
+           authorId: 1,
+           editionYear: 1985,
+           title: 'El señor de los anillos',
+           categoryId: 2,
+           languageId: 3,
+           synopsis: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m',
+           userId: 3
+       });
+
+   /* if(price) {
+       const { id } = createdBook;
+       await setPriceToBook(id, price)
+   }; */
+   
+   return createdBook;
+};
+
+const deleteBook = async (bookId) => {
+    let bookToDelete = await book.findOne({
+        where: {
+            id: bookId
+        }
+    });
+
+    await rentalPrice.destroy({
+        where: {
+            bookId
+        }
+    })
+
+    await bookToDelete.destroy();
+    return bookToDelete;
+    };
 
 describe('Books', function() {
     describe('Alta de libro', function() {
@@ -231,9 +268,10 @@ describe('Books', function() {
                     }
                 )
                 .expect(201)
-                .then((res) => {
+                .then(async (res) => {
                     assert.isObject(res.body, 'No se ha devuelto un objeto de libro');
-
+                    //console.log('Id del libro creado para el test: ' + res.body.id);
+                    await deleteBook(res.body.id);
                 })
         })
 
@@ -253,37 +291,37 @@ describe('Books', function() {
                     }
                 )
                 .expect(201)
-                .then((res) => {
+                .then(async (res) => {
                     assert.isObject(res.body, 'No se ha devuelto un objeto de libro');
-
+                    //console.log('Id del libro creado para el test: ' + res.body.id);
+                    await deleteBook(res.body.id);
                 })
         })
     });
 
     describe('Modificación de libro', function() {
        
-        /* before(function() {
-            console.log('BEFORE TEST');
+        let bookId, fakeBookId = 5698;
+
+        before(async function() {
+            console.log('BEFORE TEST EDIT BOOK');
+            let bookCreated = await createBook();
+            bookId = bookCreated.id;
+            console.log('Id del libro creado: ' + bookId);
         })
     
-        after(function() {
-            console.log('AFTER TEST');
+        after(async function() {
+            console.log('AFTER TEST EDIT BOOK');
+            let bookDeleted = await deleteBook(bookId);
+            console.log('Id del libro eliminado es: ' + bookDeleted.id);
             
         })
 
-        beforeEach(function() {
-            console.log('BEFORE_EACH TEST');
-        })
-    
-        afterEach(function() {
-            console.log('AFTER_EACH TEST');
-            
-        }) */
 
         it('Se requiere un JSON con TODOS los datos obligatorios para editar los campos de un libro', async function() {
 
             return request(app)
-                .put('/books/3')
+                .put('/books/' + bookId)
                 .send({})
                 .expect(400)
                 .then( res => {
@@ -295,7 +333,7 @@ describe('Books', function() {
         it('Se requiere que el libro que se desea editar, debe estar dado de alta en la DB', async function() {
 
             return request(app)
-                .put('/books/358')
+                .put('/books/' + fakeBookId)
                 .send(
                     {
                         "authorId": 5,
@@ -314,10 +352,10 @@ describe('Books', function() {
                 })
         })
 
-        it('Se requiere que el libro que se desea editar, debe tener un estado "DISPONIBLE"', async function() {
+        it('Se espera obtener un status code = 200, al editar un libro cuyo estado sea "DISPONIBLE"', async function() {
 
             return request(app)
-                .put('/books/2')
+                .put('/books/' + bookId)
                 .send(
                     {
                         "authorId": 5,
@@ -325,20 +363,17 @@ describe('Books', function() {
                         "title": "La señora Dalloway",
                         "categoryId": 6,
                         "languageId": 2,
-                        "synopsis": "La señora Dalloway (título original en inglés, Mrs. Dalloway) es la cuarta novela de Virginia Woolf, publicada el 14 de mayo de 1925. Detalla un día en la vida de Clarissa Dalloway, en la Inglaterra posterior a la Primera Guerra Mundial",
-                        "userId": 6
+                        "synopsis": "La señora Dalloway (título original en inglés, Mrs. Dalloway) es la cuarta novela de Virginia Woolf, publicada el 14 de mayo de 1925. Detalla un día en la vida de Clarissa Dalloway, en la Inglaterra posterior a la Primera Guerra Mundial"
                     }
                 )
-                .expect(400)
-                .then( res => {
-                    assert.equal(res.body.message, "BOOK_DON'T_AVAILABLE")
-
-                })
+                .expect('Content-Type', /json/)
+                .expect(200)
+                
         })
 
         it('Se requiere ingresar un autor que ya exista en la DB', function(done) {
             request(app)
-                .put('/books/19')
+                .put('/books/' + bookId)
                 .send(
                     {
                         "authorId": 899,
@@ -359,7 +394,7 @@ describe('Books', function() {
 
         it('Se requiere ingresar una categoría que ya exista en la DB', async function() {
             return request(app)
-                .put('/books/19')
+                .put('/books/' + bookId)
                 .send(
                     {
                         "authorId": 8,
@@ -378,7 +413,7 @@ describe('Books', function() {
 
         it('Se requiere ingresar un lenguaje que ya exista en la DB', async function() {
             return request(app)
-                .put('/books/19')
+                .put('/books/' + bookId)
                 .send(
                     {
                         "authorId": 8,
@@ -397,7 +432,7 @@ describe('Books', function() {
 
         it('Se requiere ingresar un año de edición que sea válido (mayor que "0")', async function() {
             return request(app)
-                .put('/books/19')
+                .put('/books/' + bookId)
                 .send(
                     {
                         "authorId": 8,
@@ -416,7 +451,7 @@ describe('Books', function() {
 
         it('Se requiere ingresar un título válido para el libro (de 1 a 100 caracteres)', async function() {
             return request(app)
-                .put('/books/19')
+                .put('/books/' + bookId)
                 .send(
                     {
                         "authorId": 8,
@@ -435,7 +470,7 @@ describe('Books', function() {
 
         it('Se requiere ingresar una sinopsis válida para el libro (de 1 a 255 caracteres)', async function() {
             return request(app)
-                .post('/books')
+                .put('/books/' + bookId)
                 .send(
                     {
                         "authorId": 8,
@@ -452,9 +487,9 @@ describe('Books', function() {
                 })
         })
 
-        it('Requiere un valor decimal válido para el precio de alquiler del libro, mayor que "0"', async function() {
+        it('Se requiere un valor numérico válido para el precio de alquiler del libro, mayor que "0"', async function() {
             return request(app)
-                .put('/books/1')
+                .put('/books/' + bookId)
                 .send(
                     {
                         "authorId": 8,
@@ -471,5 +506,55 @@ describe('Books', function() {
                     assert.equal(res.body.message, 'INVALID_PRICE')
                 })
         })
-    })
+
+        it('Se espera un Status Code = 200, luego de realizarse la modificación éxitosa de un libro', async function() {
+            return request(app)
+                .put('/books/' + bookId)
+                .send(
+                    {
+                        "authorId": 8,
+                        "editionYear": 150,
+                        "title": "Lorem ipsum dolor sit amet",
+                        "categoryId": 2,
+                        "languageId": 3,
+                        "synopsis": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis",
+                        "price": 500
+                    }
+                )
+                .expect('Content-Type', /json/)
+                .expect(200)
+                
+        })
+    });
+
+    describe('Eliminación de libro', function() {
+       let bookId, fakeBookId = 5698;
+        
+       before(async function() {
+            console.log('BEFORE TEST DELETE BOOK');
+            let bookCreated = await createBook();
+            bookId = bookCreated.id;
+            console.log('Id del libro creado: ' + bookId);
+        })
+            
+        it('Se debe retornar un mensaje de error, si se indica el ID de un libro que no existe en la DB', async function() {
+            
+            return request(app)
+                .delete('/books/' + fakeBookId)
+                .expect(400)
+                .then( res => {
+                    assert.equal(res.body.message, 'BAD_REQUEST')
+
+                })
+        })
+
+        it('Se requiere el ID de un libro que ya exista en la DB y cuyo estado sea "Disponible" para la eliminación éxitosa del libro', async function() {
+            
+            return request(app)
+                .delete('/books/' + bookId)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+        })
+    });
 })
