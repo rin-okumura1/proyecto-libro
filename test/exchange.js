@@ -6,17 +6,6 @@ const app = require('../app')
 describe('Exchange', function() {
     describe('Registro de intercambio', function() {
        
-        it('Se requiere un JSON con la informacion necesaria de Exchange', async function() {
-
-            return request(app)
-                .post('/exchange')
-                .send({})
-                .expect(400)
-                .then( res => {
-                    assert.equal(res.body.message, 'BAD_REQUEST')
-
-                })
-        });
         
        it('Requiere que los dueños de los libros no tengan el mismo id', function(done) {
 
