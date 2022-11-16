@@ -37,22 +37,26 @@ router.post('/', async function (req, res, next) {
    
    dateNowExchange = await  dateNow.getDateNow()
  
- 
     try {
         if(data) {
+
+          
+
          
           if(!bookId1 || !bookId2) {
             throw new Error('BAD_REQUEST')
           }
           
-          if ( await users.isEqualUser(bookId1,bookId2)){
-            throw new Error('ERROR_SAME_USERS')
-          }
           // validar libro 1
           await dataValidation(bookId1)
 
           // validar libro 2 
           await dataValidation(bookId2)
+          
+          if ( await users.isEqualUser(bookId1,bookId2)){
+            throw new Error('ERROR_SAME_USERS')
+          }
+          
 
         
             let saved = await exchange.saveExchange(bookId1, bookId2, dateNowExchange);
@@ -81,7 +85,7 @@ router.post('/', async function (req, res, next) {
       throw new Error("BOOK_DON'T_AVAILABLE")
     }
     
-    if ( (! await  users.isEnable(bookFound.userId))) { // si esta disponible los usuario que intercambian
+    if ( (! await  users.isEnable(bookFound.userId))) { // si esta habilitado los usuario que intercambian
       throw new Error("USER_DON'T_ENABLE")
     }
     
