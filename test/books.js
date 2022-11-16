@@ -14,10 +14,10 @@ const createBook = async (price) => {
            userId: 3
        });
 
-   /* if(price) {
+   if(price) {
        const { id } = createdBook;
        await setPriceToBook(id, price)
-   }; */
+   };
    
    return createdBook;
 };
@@ -42,24 +42,6 @@ const deleteBook = async (bookId) => {
 describe('Books', function() {
     describe('Alta de libro', function() {
        
-        /* before(function() {
-            console.log('BEFORE TEST');
-        })
-    
-        after(function() {
-            console.log('AFTER TEST');
-            
-        })
-
-        beforeEach(function() {
-            console.log('BEFORE_EACH TEST');
-        })
-    
-        afterEach(function() {
-            console.log('AFTER_EACH TEST');
-            
-        }) */
-
         it('Se requiere un JSON con TODOS los datos obligatorios del libro', async function() {
 
             return request(app)
@@ -70,12 +52,6 @@ describe('Books', function() {
                     assert.equal(res.body.message, 'BAD_REQUEST')
 
                 })
-                /* .end(function(err, res) {
-                    assert.equal(res.body.message, 'BAD_REQUEST')
-                    console.log(res.body);
-                    if(err)  done(err);
-                    return done();
-                }) */
 
         })
 
@@ -270,7 +246,6 @@ describe('Books', function() {
                 .expect(201)
                 .then(async (res) => {
                     assert.isObject(res.body, 'No se ha devuelto un objeto de libro');
-                    //console.log('Id del libro creado para el test: ' + res.body.id);
                     await deleteBook(res.body.id);
                 })
         })
@@ -293,7 +268,6 @@ describe('Books', function() {
                 .expect(201)
                 .then(async (res) => {
                     assert.isObject(res.body, 'No se ha devuelto un objeto de libro');
-                    //console.log('Id del libro creado para el test: ' + res.body.id);
                     await deleteBook(res.body.id);
                 })
         })
@@ -307,13 +281,11 @@ describe('Books', function() {
             console.log('BEFORE TEST EDIT BOOK');
             let bookCreated = await createBook();
             bookId = bookCreated.id;
-            console.log('Id del libro creado: ' + bookId);
         })
     
         after(async function() {
             console.log('AFTER TEST EDIT BOOK');
-            let bookDeleted = await deleteBook(bookId);
-            console.log('Id del libro eliminado es: ' + bookDeleted.id);
+            await deleteBook(bookId);
             
         })
 
@@ -534,7 +506,6 @@ describe('Books', function() {
             console.log('BEFORE TEST DELETE BOOK');
             let bookCreated = await createBook();
             bookId = bookCreated.id;
-            console.log('Id del libro creado: ' + bookId);
         })
             
         it('Se debe retornar un mensaje de error, si se indica el ID de un libro que no existe en la DB', async function() {
