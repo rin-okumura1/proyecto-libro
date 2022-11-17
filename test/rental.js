@@ -6,7 +6,7 @@ const app = require('../app')
 describe('Rental', function() {
     describe('Registrar una renta', function() {
 
-        it('Requiere el usuario exista', function(done) {
+        it('Requiere el usuario no exista', function(done) {
 
             request(app)
                 .post('/rental')
@@ -27,7 +27,7 @@ describe('Rental', function() {
                 })
             }) 
                 //---------------------------------------------------------
-        it ('Requiere que el libro exista', function(done) {
+        it ('Requiere que el libro no exista', function(done) {
 
                     request(app)
                         .post('/rental')
@@ -48,31 +48,12 @@ describe('Rental', function() {
                     
                 })})
 
-                //---------------------------------------
-                it ('Requiere que el libro exista', function(done) {
-
-                    request(app)
-                        .post('/rental')
-                        .send(
-                            {
-                                "userId":1,
-                                "bookId":21321,
-                                "dateFrom": "2022-11-15",
-                                "dateToExpect":"2022-11-16"
-                                
-                              }
-                        )
-                        .expect(400)
-                        .end(function(err, res) {
-                            assert.equal(res.body.message, 'BAD_REQUEST')
-                            if(err)  done(err);
-                            return done();
-                    
-                })})
+                
+                
 
         //-------------------------------------------------
 
-        it (' Se requiere que el dateFrom sea igual o mayor del dia actual', function(done) {
+        it (' Se requiere que el dateFrom sea menor del dia actual', function(done) {
 
             request(app)
                 .post('/rental')
@@ -94,7 +75,7 @@ describe('Rental', function() {
         })})
         //---------------------------------------------------
 
-        it (' Se requiere que el dateExcpect sea menor que el dia actual y el dateFrom', function(done) {
+        it (' Se requiere que el dateExpect sea menor que el dia actual y el dateFrom', function(done) {
             request(app)
                 .post('/rental')
                 .send(
@@ -115,7 +96,7 @@ describe('Rental', function() {
 
         //-------------------------------------------
 
-        it (' Se requiere que el usuario se encuentre habilitado para rentar', function(done) {
+        it (' Se requiere que el usuario no se encuentre habilitado para rentar', function(done) {
             request(app)
                 .post('/rental')
                 .send(
@@ -136,7 +117,7 @@ describe('Rental', function() {
 
         //--------------------------------------------------------------------------
 
-        it (' Se requiere que el libro se encuentre disponible para rentar', function(done) {
+        it (' Se requiere que el libro no se encuentre disponible para rentar', function(done) {
             request(app)
                 .post('/rental')
                 .send(
@@ -157,7 +138,7 @@ describe('Rental', function() {
 
         //----------------------------------------------------------------------------
 
-        it (' Se requiere que el libro se encuentre destinado para rental, es decir que tenga registro en la tabla de RentalPrice', function(done) {
+        it (' Se requiere que el libro no se encuentre destinado para rental, es decir que tenga registro en la tabla de RentalPrice', function(done) {
             request(app)
                 .post('/rental')
                 .send(
@@ -178,7 +159,7 @@ describe('Rental', function() {
 
         //-------------------------------------------------------------------------------------------------------------
 
-        it (' Se requiere que el usuario no tenga penalidades con fecha vigente', function(done) {
+        it (' Se requiere que el usuario tenga penalidades con fecha vigente', function(done) {
             request(app)
                 .post('/rental')
                 .send(
@@ -203,7 +184,7 @@ describe('Rental', function() {
 
 describe('Confirmar la devolucion de la renta', function() {
 
-    it('Se requiere que el dateToReal coincida con el dia actual', function(done) {
+    it('Se requiere que el dateToReal no coincida con el dia actual', function(done) {
 
         request(app)
             .put('/rental/43')
