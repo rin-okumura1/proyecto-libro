@@ -3,15 +3,15 @@ const request = require('supertest')
 const app = require('../app')
 const { book, rentalPrice } = require('../db/models')
 
-const createBook = async (price) => {
+const createBook = async (authorId, editionYear, title, categoryId, languageId, synopsis, userId, price) => {
     const createdBook = await book.create({
-           authorId: 1,
-           editionYear: 1985,
-           title: 'El señor de los anillos',
-           categoryId: 2,
-           languageId: 3,
-           synopsis: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m',
-           userId: 3
+           authorId,
+           editionYear,
+           title,
+           categoryId,
+           languageId,
+           synopsis,
+           userId
        });
 
    if(price) {
@@ -39,7 +39,7 @@ const deleteBook = async (bookId) => {
     return bookToDelete;
     };
 
-describe('Books', function() {
+describe('Book Tests', function() {
     describe('Alta de libro', function() {
        
         it('Se requiere un JSON con TODOS los datos obligatorios del libro', async function() {
@@ -279,7 +279,7 @@ describe('Books', function() {
 
         before(async function() {
             console.log('BEFORE TEST EDIT BOOK');
-            let bookCreated = await createBook();
+            let bookCreated = await createBook(1, 1980, 'Blanca Nieves', 4, 2, 'Cualquier cosa', 3);
             bookId = bookCreated.id;
         })
     
@@ -504,7 +504,7 @@ describe('Books', function() {
         
        before(async function() {
             console.log('BEFORE TEST DELETE BOOK');
-            let bookCreated = await createBook();
+            let bookCreated = await createBook(1, 1980, 'Blanca Nieves', 4, 2, 'Cualquier cosa', 3);
             bookId = bookCreated.id;
         })
             
@@ -527,5 +527,72 @@ describe('Books', function() {
                 .expect('Content-Type', /json/)
                 .expect(200)
         })
+    });
+
+    describe('Obtener libro', function() {
+       
+        let bookId, fakeBookId = 5698, lenguageSearched = 1;
+        let bookCollection = [];
+        let lenguagesId = [1, 2 ,1 ,3, 1];
+
+        const createBookColletionByLenguage = async () => {
+            for (let i = 0; i < lenguagesId.length; i++) {
+                bookCollection.push(await createBook(1, 1980, 'Blanca Nieves', 4, lenguagesId[i], 'Cualquier cosa', 3));
+            }
+        };
+
+        const deleteBookCollection = async () => {
+            for (let i = 0; i < bookCollection.length; i++) {
+                await deleteBook(bookCollection[i].id)
+            }
+        };
+
+        before(async function() {
+            console.log('BEFORE TEST GET BOOK');
+            let bookCreated = await createBook(1, 1980, 'Blanca Nieves', 4, 2, 'Cualquier cosa', 3);
+            bookId = bookCreated.id;
+            await createBookColletionByLenguage();
+        })
+    
+        after(async function() {
+            console.log('AFTER TEST GET BOOK');
+            await deleteBook(bookId);
+            await deleteBookCollection();
+        })
+
+        it('Se requiere obtener un libro, mediante un ID válido, para un libro que exista en la DB', async function() {
+
+            return request(app)
+                .get('/books/' + bookId)
+                .expect(200)
+                .then( res => {
+                    assert.isObject(res.body, 'No se ha devuelto un objeto de libro')
+
+                })
+        })
+
+        it('Se requiere obtener una respuesta de BAD REQUEST, al intentar obtener un libro con ID inválido o no existente en la DB', async function() {
+
+            return request(app)
+                .get('/books/' + fakeBookId)
+                .expect(404)
+                .then( res => {
+                    assert.equal(res.body.message, 'NOT_FOUND')
+
+                })
+        })
+
+        it('Se requiere obtener una lista de libros, filtrados por un ID de lenguaje existente en la DB', async function() {
+
+            return request(app)
+                .get('/books?languageId=' + lenguageSearched)
+                .expect(200)
+                .then( res => {
+                    assert.isNotEmpty(res.body, 'La colección de libros esta vacía')
+                    assert.isArray(res.body, 'No se ha devuelto una colección de libros')
+
+                })
+        })
+        
     });
 })
