@@ -45,9 +45,10 @@ async function generarPenalidad(userId){
    
     
     if (!penalty){  // si no existe registro de sanciones
-        penalty=await createPenalty(userId)
+        await createPenalty(userId)
+        
     } 
-    
+    if (penalty){
     let dateToPenalty = await date.setFormatDateToExpect(penalty.dateTo)
     if (penalty.cantPenalty<MAX_PENALTY){  // si la penalidad es menor a 10
         if (dateToPenalty <= dateNow){ // fecha vencida 
@@ -59,12 +60,9 @@ async function generarPenalidad(userId){
        }
     } else {    // si la penalidad es mayor a 10 se cambia el status del usuario
         let user = await userRep.getById(userId)
-      
         userRep.changeStatus(user.id,DISABLE)
-        
-      
     }
-    
+  }
     
 }
 
