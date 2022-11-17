@@ -13,7 +13,11 @@ module.exports = (sequelize, DataTypes) => {
       //Una Category tiene muchos Books
       Category.hasMany(models.book);
        //una categoria tiene varios usuarios que lo prefieren
-       Category.belongsToMany(models.Users, { through: 'CategoriesByUsers'});
+       Category.belongsToMany(models.Users,  {
+        through: "categories_users",
+        as: "users",
+        foreignKey: "category_id",
+      } );
     }
   }
   Category.init({

@@ -6,7 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
-    "chai": "^4.3.6",
+    "chai": "^4.3.7",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "ejs": "~2.6.1",
@@ -16,6 +16,7 @@
     "morgan": "~1.9.1",
     "mysql2": "^2.3.3",
     "sequelize": "^6.25.3",
-    "sequelize-cli": "^6.5.2"
+    "sequelize-cli": "^6.5.2",
+    "supertest": "^6.3.1"
   }
 }

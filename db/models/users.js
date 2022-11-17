@@ -15,11 +15,23 @@ module.exports = (sequelize, DataTypes) => {
       // Un User publica muchos Books para vender/intercambiar
       User.hasMany(models.book);
       //user tiene muchos favoritos (autores)
-      User.belongsToMany(models.author,  { through: 'AuthorsByUsers' });
+      User.belongsToMany(models.author,  {
+        through: "authors_users",
+        as: "authors",
+        foreignKey: "user_id",
+      } );
       //user tiene muchos favoritos (categorias)
-      User.belongsToMany(models.category, { through: 'CategoriesByUsers'});
+      User.belongsToMany(models.category,  {
+        through: "categories_users",
+        as: "categories",
+        foreignKey: "user_id",
+      } );
       //user tiene muchos favoritos (lenguajes)
-      User.belongsToMany(models.language,  { through: 'LanguagesByUsers'});
+      User.belongsToMany(models.language, {
+        through: "languages_users",
+        as: "languages",
+        foreignKey: "user_id",
+      });
       // un user tieene penalidades
       User.hasOne(models.Penalty);
       //  Un User puede tener muchos rentals

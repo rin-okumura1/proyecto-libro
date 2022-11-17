@@ -16,6 +16,8 @@ router.get('/:filter/:userId', async function (req, res, next) {
     let userId = req.params.userId
     let filter = req.params.filter
 
+    console.log('get - preferences userId: ' + userId + ' filter: ' + filter)
+
     try {
 
         if (filter == 'categories') {
@@ -48,65 +50,63 @@ router.post('/:filter/:userId', async function (req, res, next) {
     let userId = req.params.userId
     let filter = req.params.filter
     let body = req.body
-    console.log(body)
+    
     try {
 
         if (filter == 'categories') {
 
-            if (!body) {
+            if(!body) {
                 throw new Error('BAD_REQUEST')
             }
 
             let category = await categories.existingCategory(body.name)
-
-
-            if (category) {
-
-                return await categories_users.saveFavoriteCategory(userId, category.dataValues.id).then((data) => {
-                    res.status(201).json(data)
-                })
-            } else {
+           
+            
+            if(category){
                 
-                res.status(400).json({ message: 'CATEGORY_NOT_FOUND' })
-            }
+                return await categories_users.saveFavoriteCategory(userId, category.dataValues.id).then((data) => {
+                res.json(data)
+            })
+        }else{
+            throw new Error('CATEGORY_NOT_FOUND')
+        }
         }
 
-        if (filter == 'languages') {
+        if (filter == 'languages'){
 
-            if (!body) {
+            if(!body) {
                 throw new Error('BAD_REQUEST')
             }
 
             let language = await languages.existingLanguage(body.language)
             console.log(language)
-            if (language) {
-
+            if(language){
+                
                 return await languages_users.saveFavoriteLanguage(userId, language.dataValues.id).then((data) => {
-                    res.status(201).json(data)
-                })
-            } else {
-               
-                res.status(400).json({ message: 'LANGUAGE_NOT_FOUND' })
-            }
+                res.json(data)
+            })
+        }else{
+            throw new Error('LANGUAGE_NOT_FOUND')
+        }
         }
 
 
         if (filter == 'authors') {
 
-            if (!body) {
+            if(!body) {
                 throw new Error('BAD_REQUEST')
             }
 
             let author = await authors.existingAuthors(body.name)
             console.log(author)
-            if (author) {
-
+            if(author){
+                
                 return await authors_users.saveFavoriteAuthor(userId, author.dataValues.id).then((data) => {
-                    res.status(201).json(data)
-                })
-            } else {
-                res.status(400).json({ message: 'AUTHOR_NOT_FOUND' })
-            }
+                res.json(data)
+            })
+        }else{
+            throw new Error('AUTHOR_NOT_FOUND')
+        }
         }
 
     } catch (error) {
@@ -125,60 +125,60 @@ router.delete('/:filter/:id', async function (req, res, next) {
     try {
         if (filter == 'categories') {
 
-            if (!body) {
+            if(!body) {
                 throw new Error('BAD_REQUEST')
             }
 
             let category = await categories.existingCategory(body.name)
-
-
-            if (category) {
-
+           
+            
+            if(category){
+                
                 return await categories_users.deleteFavoriteCategory(userId, category.dataValues.id).then((data) => {
-                    res.json(data)
-                })
-            } else {
-                throw new Error('CATEGORY_NOT_FOUND')
-            }
+                res.json(data)
+            })
+        }else{
+            throw new Error('CATEGORY_NOT_FOUND')
+        }
         }
 
-        if (filter == 'languages') {
+        if (filter == 'languages'){
 
-            if (!body) {
+            if(!body) {
                 throw new Error('BAD_REQUEST')
             }
 
             let language = await languages.existingLanguage(body.language)
             console.log(language)
-            if (language) {
-
+            if(language){
+                
                 return await languages_users.deleteFavoriteLanguage(userId, language.dataValues.id).then((data) => {
-                    res.json(data)
-                })
-            } else {
-                throw new Error('LANGUAGE_NOT_FOUND')
-            }
+                res.json(data)
+            })
+        }else{
+            throw new Error('LANGUAGE_NOT_FOUND')
+        }
         }
 
 
         if (filter == 'authors') {
 
-            if (!body) {
+            if(!body) {
                 throw new Error('BAD_REQUEST')
             }
 
             let author = await authors.existingAuthors(body.name)
             console.log(author)
-            if (author) {
-
+            if(author){
+                
                 return await authors_users.deleteFavoriteAuthor(userId, author.dataValues.id).then((data) => {
-                    res.json(data)
-                })
-            } else {
-                throw new Error('AUTHOR_NOT_FOUND')
-            }
+                res.json(data)
+            })
+        }else{
+            throw new Error('AUTHOR_NOT_FOUND')
         }
-
+        }
+        
 
     } catch (error) {
         console.log("internal error: " + error)

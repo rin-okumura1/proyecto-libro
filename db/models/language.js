@@ -13,8 +13,12 @@ module.exports = (sequelize, DataTypes) => {
       // Un Language puede tener muchos registros de Books
       Language.hasMany(models.book);
 
-      //un lenguage tiene varios usuarios que lo prefieres
-      Language.belongsToMany(models.Users,  { through: 'LanguagesByUsers'});
+      //un lenguage tiene varios usuarios que lo prefieren
+      Language.belongsToMany(models.Users, {
+        through: "languages_users",
+        as: "users",
+        foreignKey: "language_id",
+      });
     }
   }
   Language.init({

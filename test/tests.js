@@ -1,4 +1,4 @@
-const assert =require("chai")
+/*const assert =require("chai")
 const app=require("../app.js")
 const request = require('supertest');
 
@@ -16,5 +16,5 @@ it("post de users",function(done){
      "statusId":2})
      .expect(400,done)})
     
-    })
+    })*/
 

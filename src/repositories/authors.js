@@ -1,5 +1,11 @@
 const { book, author } = require('../../db/models');
 
+const getAll = async () => {
+    return await author.findAll({
+    })
+};
+
+
 const getAllAuthorsWithBooks = async () => {
     return await author.findAll({
         include: [{ model: book}]
@@ -36,11 +42,19 @@ async function getByName(authorName){
 
 }
 
+const existingAuthors = async (nameToFind) => {
+    return await author.findOne(
+        { where: { name: nameToFind  } }
+    )
+};
+
 
 module.exports = {
     getAllAuthorsWithBooks,
     getAllById,
+    getAll,
     getByName,
     save,
-    getAuthorById
+    getAuthorById, 
+    existingAuthors
 }

@@ -1,8 +1,8 @@
 
-const { Users,Status } = require("../../db/models")
+const { Users, Status, category, language, author } = require("../../db/models");
 
 async function getAll() {
-  return await Users.findAll({include:[Status]})
+  return await Users.findAll({ include: [Status] })
 }
 
 async function getById(id) {
@@ -28,11 +28,11 @@ async function updateUser(userId, newDataUser) {
     password: newDataUser.password,
 
   },
-  {
-    where: {
-      id: userId
-    }
-  });
+    {
+      where: {
+        id: userId
+      }
+    });
   return await Users.findOne({
     where: {
       id: userId
@@ -49,10 +49,45 @@ async function existEmail(newEmail) {
   return (userWithSameEmail != null);
 }
 
-module.exports={
-    getById,
-    getAll,
-    existEmail,
-    saveUser,
-    updateUser,
+async function getByIdWithAuthors(userId) {
+  
+    return await Users.findByPk(userId, 
+    
+      ({
+        include:{model: author,  as: "authors"}
+      })
+  
+      )
+}
+async function getByIdWithLanguages(userId) {
+  return await Users.findByPk(userId, 
+    
+    ({
+     
+      include:{model: language,  as: "languages"}
+    })
+
+    )
+}
+async function getByIdWithCategories(userId) {
+  return await Users.findByPk(userId, 
+    
+    ({
+     
+      include:{model: category,  as: "categories"}
+    })
+
+    )
+}
+
+module.exports = {
+  getById,
+  getAll,
+  existEmail,
+  saveUser,
+  updateUser,
+  getByIdWithAuthors,
+  getByIdWithLanguages,
+  getByIdWithCategories,
+  
 }

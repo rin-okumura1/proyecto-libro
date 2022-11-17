@@ -13,7 +13,11 @@ module.exports = (sequelize, DataTypes) => {
       //Un Author tiene muchos Books
       Author.hasMany(models.book);
      //un author tiene varios usuarios que lo prefieren
-      Author.belongsToMany(models.Users, { through: 'AuthorsByUser' }); 
+      Author.belongsToMany(models.Users,  {
+        through: "authors_users",
+        as: "users",
+        foreignKey: "author_id",
+      } ); 
     }
   }
   Author.init({
