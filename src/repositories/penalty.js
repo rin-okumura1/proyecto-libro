@@ -19,10 +19,18 @@ const getAll = async (params = {}) => {
 return await Penalty.findAll(query);
 };
 
-const getById = async (userId) => {
+const getPenaltyByIdUser = async (userId) => {
   return  Penalty.findOne({
     where: {
       userId: userId
+    }
+  })
+}
+
+const getById = async (paramsId) => {
+  return  Penalty.findOne({
+    where: {
+      id: paramsId
     }
   })
 }
@@ -34,11 +42,13 @@ async function generarPenalidad(userId){
     //  2.si tiene fecha vigente  --> sumarFechaSancionVigente(id, cant,fecha)
    let penalty = await getById(userId)
    let dateNow = await date.getDateNow()
-   let dateToPenalty = await date.setFormatDateToExpect(penalty.dateTo)
+   
     
     if (!penalty){  // si no existe registro de sanciones
-        penalty=createPenalty(userId)
+        penalty=await createPenalty(userId)
     } 
+    
+    let dateToPenalty = await date.setFormatDateToExpect(penalty.dateTo)
     if (penalty.cantPenalty<MAX_PENALTY){  // si la penalidad es menor a 10
         if (dateToPenalty <= dateNow){ // fecha vencida 
             updatedPenalty(penalty.id, penalty.cantPenalty)
@@ -96,4 +106,5 @@ module.exports = {
     getAll,
     generarPenalidad,
     updatedPenalty,
+    getPenaltyByIdUser,
 }

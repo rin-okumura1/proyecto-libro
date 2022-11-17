@@ -2,32 +2,75 @@ const { assert } = require('chai')
 const request = require('supertest')
 const app = require('../app')
 var penalties = require('../src/repositories/penalty')
-var user = require('../src/repositories/users')
+const { Users } = require("../db/models")
 
 
+async function createUser() {
+    const newdUser =await  Users.create({
+        "name": "Juan",
+        "surname": "Perez",
+        "email": "juanperez@correo.com",
+        "password": "123456",
+       });
 
-
+       return newdUser
+    }
+async function deleteUser() {
+    let user = await Users.findOne({
+        where: {
+            email: "juanperez@correo.com"
+        }
+      })
+    await user.destroy();
+    return user;
+        }
 
 describe('Penalty', function() {
+
+    
     describe('Registrar una penalidad', function() {
 
-        before(function () {
+        before(async function ()  {
+            console.log("before");
+             await createUser()
             
-          });
+            });
+            
+            
         it('Se requiere crear un registro de penalizacion a usuario', async function() {
             // crear un registro en el cual el usuario no este registrado en la tabla de penalidades
-            let userId=4
-            penalty= await penalties.getPenaltyByIdUser(userId)
+            console.log("it");
+            
+            let user = await Users.findOne({
+                where: {
+                    email: "juanperez@correo.com"
+                }
+              })
+            let uId = user.id
+
+            console.log("el id" + uId);
+
+            penalty= await penalties.getPenaltyByIdUser(uId)
             if (!penalty){
-                 await penalties.generarPenalidad(userId)
+                 await penalties.generarPenalidad(uId)
             }
-            penalty = await penalties.getPenaltyByIdUser(userId) 
-            if (penalty){
+            penalty = await penalties.getPenaltyByIdUser(uId) 
+            console.log(penalty);
+            if (penalty.userId == uId){
                 result=true
             }
             assert.equal(result,true)
         })
 
+        after(async function ()  {
+            console.log("after");
+             await deleteUser()
+            
+            });
+
+    })
+
+    
         
         //------------------------------------------------------------------
 
@@ -111,7 +154,7 @@ describe('Penalty', function() {
 
 
 
-    })
+    });
 
 
 
@@ -130,4 +173,3 @@ describe('Penalty', function() {
 
 
 
-});
