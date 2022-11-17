@@ -90,13 +90,13 @@ router.get('/:bookId', async (req, res) => {
     
     await books.getBookById(req.params.bookId)
     .then((data) => {
-        if(data) {
-            return res.json(data)
+        if(!data) {
+            throw new Error('NOT_FOUND')
         }
-        res.status(404).end()
+        return res.status(200).json(data)
     })
     .catch((error) => {
-        res.json(error)
+        res.status(404).json({message: error.message});
     })
     
 });
