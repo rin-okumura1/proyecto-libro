@@ -18,11 +18,10 @@ const getAll = async (params = {}) => {
 }
 return await Penalty.findAll(query);
 };
-
-const getPenaltyByIdUser = async (userId) => {
+async function getPenaltyByIdUser(uID) {
   return  Penalty.findOne({
     where: {
-      userId: userId
+      userId: uID
     }
   })
 }
@@ -40,16 +39,23 @@ async function generarPenalidad(userId){
     // existiendo.. si tiene cantidad penalidades entonces:
     //  1.si tiene fecha vencida --> update (id, cant, fecha)
     //  2.si tiene fecha vigente  --> sumarFechaSancionVigente(id, cant,fecha)
-   let penalty = await getById(userId)
+   let penalty = await getPenaltyByIdUser(userId)
    let dateNow = await date.getDateNow()
+
+ 
+   console.log(penalty);
+
    
     
     if (!penalty){  // si no existe registro de sanciones
+      console.log("que no existe registro");
         await createPenalty(userId)
-        
     } 
+
     if (penalty){
-    let dateToPenalty = await date.setFormatDateToExpect(penalty.dateTo)
+      
+       
+    let dateToPenalty = date.setFormatDateToExpect(penalty.dateTo)
     if (penalty.cantPenalty<MAX_PENALTY){  // si la penalidad es menor a 10
         if (dateToPenalty <= dateNow){ // fecha vencida 
             updatedPenalty(penalty.id, penalty.cantPenalty)
@@ -69,6 +75,7 @@ async function generarPenalidad(userId){
 
 
 async function createPenalty(userId){
+  
 let dateTo = date.getDateForPenalty()
     return await Penalty.create({
         userId,
@@ -83,6 +90,7 @@ async function updatedPenalty (penaltyId, cantPenalty, dateTo){
         dateTo= date.getDateForPenalty()
     }
     cantPenalty ++
+    
     return await Penalty.update(
       {
         cantPenalty: cantPenalty,

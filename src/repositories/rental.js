@@ -66,7 +66,7 @@ async function saveRental(userId, bookId,dateFrom , dateToExpect) {
 
 async function updatedDateToReal (rentalId,dateToReal){
 
-  
+  console.log("entre al updateRental");
   return await Rental.update(
     {
       dateToReal: dateToReal
