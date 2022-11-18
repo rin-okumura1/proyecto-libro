@@ -9,9 +9,7 @@ const {
     Exchange
 } = require("../db/models")
 
-var booksRepo =  require ('../src/repositories/books')
 var usersRepo =  require ('../src/repositories/users')
-
 
 
 async function createBook(data) {
@@ -56,8 +54,6 @@ async function createUser(data) {
     return newdUser
 }
 
-
-
 async function updateBook(bookId,userId) {
     return await book.update({
         userId
@@ -78,16 +74,6 @@ async function deleteUser(i) {
    
 }
 
-async function deletePenalty(uId) {
-    
-    return await Penalty.destroy({
-        where: {
-            "userId": uId
-        }
-    });
-    
-    
-}
 async function deleteBook(i) {
     return await book.destroy({
         where: {
@@ -95,25 +81,12 @@ async function deleteBook(i) {
         }
     })
 }
-async function createExchange(data) {
-    const {
-        bookId1,
-        bookId2,
-        date
-    } = data;
-    const newdRental = await Exchange.create({
-                    "bookId1": bookId1,
-                    "bookId2": bookId2,
-                    "date": date
-    });
 
-    return newdRental
-}
 
-async function deleteExchange(i) {
+async function deleteExchange(bookId1) {
     return await Exchange.destroy({
         where: {
-            "id": i
+            "bookId1": bookId1
         }
     })
 }
@@ -131,7 +104,7 @@ describe('Exchange', function () {
     const NOTENABLE = 1
 
 
-    before(async function () {
+    beforeEach(async function () {
 
 
         let dataUser = {
@@ -207,13 +180,6 @@ describe('Exchange', function () {
         bookNoAvailability = await createBook(dataBookNoAvailability)
         
 
-        let dataRental = {
-            "bookId1": bookDescribe.id,
-            "bookId2": bookDescribeTwo.id ,
-            "date": "2022-11-22"
-            }
-        
-        exchangeDescribe = await createExchange (dataRental)
        
         
     })
@@ -287,7 +253,49 @@ describe('Exchange', function () {
                     assert.equal(res.body.message, 'USER_DON\'T_ENABLE')
                 })
         })
+        it('Requiere un codigo 201 registrar correctamente el intercambio',function (done) {
+         
+            request(app)
+               .post('/exchange')
+               .send({
+                   "bookId1": bookDescribe.id,
+                   "bookId2": bookDescribeTwo.id,
+                   "date": "2022-11-18"
+               })
+            .expect('Content-Type', /json/)
+            .expect(201,done)
+            
+       })
+       it('Requiere un codigo 201 registrar correctamente el intercambio',function (done) {
+        request(app)
+           .post('/exchange')
+           .send({
+               "bookId1": bookDescribe.id,
+               "bookId2": bookDescribeTwo.id,
+               "date": "2022-11-22"
+           })
+        .expect('Content-Type', /json/)
+        .expect(201,done)
+        
+       })
+       it('Se requiere obtener una respuesta "NOT_FOUND", al intentar obtener un exchange con id invalido o no existente en la base de datos',  function(done) {
+              request(app)
+            .get('/exchange/' + 1234)
+            .expect(404,done)
 
-
+       })
     })
+
+
+    afterEach(async function () {
+        await deleteUser(userDescribe.id)
+        await deleteUser(userDescribeTwo.id)
+        await deleteUser(userDescribeEnable.id)
+        await deleteBook(bookDescribe.id)
+        await deleteBook(bookDescribeTwo.id)
+        await deleteBook(bookNoAvailability .id)
+        await deleteExchange(bookDescribe.id)
+    });
+    
+    
 })

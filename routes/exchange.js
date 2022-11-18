@@ -14,7 +14,7 @@ var books = require('../src/repositories/books')
 
 /* GET home page. */
 router.get('/', async function(req, res, next) {
-  res.json(await exchange.getAll());
+  res.status(404).json(await exchange.getAll());
 });
 
 router.get('/:id', async function(req, res) {
