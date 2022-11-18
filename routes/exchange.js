@@ -39,9 +39,6 @@ router.post('/', async function (req, res, next) {
  
     try {
         if(data) {
-
-          
-
          
           if(!bookId1 || !bookId2) {
             throw new Error('BAD_REQUEST')
