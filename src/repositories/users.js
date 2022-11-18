@@ -65,11 +65,11 @@ const isEnable = async (userId) => {
 }
 const changeStatus = async (userId, statusId) =>{
 
-  let userFound = await getById(userId)
+let userFound = await getById(userId)
 
   if(userFound) {
       return await Users.update({
-          statusId
+          statusId:statusId
       },
       {
           where: {

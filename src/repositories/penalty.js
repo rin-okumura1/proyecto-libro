@@ -79,40 +79,44 @@ const getById = async (paramsId) => {
 
 
 
-function getDatePenalty(penalty) {
+function setDatePenalty(penalty) {
   return date.setFormatDateToExpect(penalty.dateTo)
 }
 
 async function generarPenalidad(userId) {
+ 
+ 
   let penalty = await getPenaltyByIdUser(userId)
+  
   if (!penalty) {
       return await createPenalty(userId)
   }
   if (penalty.cantPenalty < MAX_PENALTY) {
+    
       return await penaltyForExpired(penalty)
   }
   return await disableUser(userId)
 }
 
 async function updatePenaltyDate(penalty) {
-  
-  const dateToPenalty = date.updateDateForPenalty(penalty.dateTo) // actualiza el dateTo
-  
+  let dateToPenalty =  date.updateDateForPenalty(penalty.dateTo) // actualiza el dateTo
   return await updatedPenalty(penalty.id, penalty.cantPenalty, dateToPenalty)
 }
 
 async function penaltyForExpired(penalty) {
+  
+ 
   let dateNow = await date.getDateNow()
-  let dateToPenalty = getDatePenalty(penalty)
+  let dateToPenalty = setDatePenalty(penalty)
   if (dateToPenalty <= dateNow) { // fecha vencida 
+    
       return await updatedPenalty(penalty.id, penalty.cantPenalty)
   }
   return updatePenaltyDate(penalty)
 }
 
-async function disableUser(user) {
-  await userRep.getById(userId)
-  userRep.changeStatus(user.id, DISABLE)
+async function disableUser(userId) {
+  await userRep.changeStatus(userId, DISABLE)
 
 }
 async function createPenalty(userId) {
@@ -125,6 +129,8 @@ async function createPenalty(userId) {
 
 }
 async function updatedPenalty(penaltyId, cantPenalty, dateTo) {
+
+
   
   if (!dateTo) {
     dateTo = date.getDateForPenalty()
@@ -134,7 +140,6 @@ async function updatedPenalty(penaltyId, cantPenalty, dateTo) {
   return await Penalty.update(
 
     {
-
       cantPenalty: cantPenalty,
       dateTo: dateTo
     }, {

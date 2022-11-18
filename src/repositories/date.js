@@ -34,10 +34,10 @@ function getDateForPenalty() {
     }
 
 // SETEAMOS LA FECHA DE PENALIDAD CON FECHA VIGENTE
-function updateDateForPenalty(dateTo) {
+ function updateDateForPenalty(dateTo) {
        
     const today = dateTo;
-    today.setDate(today.getDate()+CANT_DAY)
+    today.setDate(today.getDate()+ 1 + CANT_DAY )
     const yyyy = today.getFullYear();
     let mm = today.getMonth() + 1; // Mes comienza en 0
     let dd = today.getDate();

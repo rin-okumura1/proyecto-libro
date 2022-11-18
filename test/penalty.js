@@ -5,6 +5,7 @@ const {
 const request = require('supertest')
 const app = require('../app')
 var penalties = require('../src/repositories/penalty')
+var user = require('../src/repositories/users')
 var ren = require('../routes/rental')
 var date = require('../src/repositories/date')
 const {
@@ -105,7 +106,8 @@ async function deleteUser(i) {
 }
 
 async function deletePenalty(uId) {
-     return await Penalty.destroy({
+    
+    return await Penalty.destroy({
         where: {
             "userId": uId
         }
@@ -181,27 +183,26 @@ describe('Penalty', function () {
 
     })
     describe('Registrar primera penalidad', async function () {
-        skip.it('Se requiere crear por primera vez  un registro de penalizacion a usuario ', async function () {
+        it('Se requiere crear por primera vez  un registro de penalizacion a usuario ', async function () {
             
             let penalty = await penalties.getPenaltyByIdUser(userDescribe.id)
             if (penalty == null) {
                 await penalties.generarPenalidad(userDescribe.id)
             }
             penalty = await penalties.getPenaltyByIdUser(userDescribe.id)
-            assert.isNotNull(penalty, 'se invoco mismo metodo para penalty, paso de null a !null');
+            assert.isNotNull(penalty, 'invocando mismo metodo para penalty, paso de null a !null');
+            
 
         })
-
-
-
-
-    }) // termina primer describe de registrar primera penalidad
+    }) 
     after(async function () {
         await deletePenalty(userDescribe.id)
     });
 
     describe('Actualizaciones de Penalty', async function () {
-        skip.it('Se requiere aumentar la cantidad de penalidad y actualizar dateTo no vigente', async function () {
+        
+      it('Se requiere aumentar la cantidad de penalidad y actualizar dateTo no vigente', async function () {
+            
             let dataPenalty = {
                 "userId": userDescribe.id,
                 "cantPenalty": 1,
@@ -213,19 +214,62 @@ describe('Penalty', function () {
                 await penalties.generarPenalidad(userDescribe.id)
             }
             penaltyFinal = await penalties.getPenaltyByIdUser(userDescribe.id)
-            
             cantPenaltyAfter = penaltyFinal.cantPenalty
-
             assert.equal(2, cantPenaltyAfter, 'se actualiza el cantPenalty de 1 a 2');
-
+            await deletePenalty(userDescribe.id)
+            
+            
         })
         after(async function () {
             await deletePenalty(userDescribe.id)
         });
 
-    }) // termina segundo describe de registrar primera penalidad
+        
 
+        it('Se requiere aumentar la cantidad de penalidad y actualizar dateTo vigente',async function () {
+           
+            let dataPenalty = {
+                "userId": userDescribe.id,
+                "cantPenalty": 1,
+                "dateTo": "2022-11-22"
+            }
+            let penaltyIt=  await createPenalty(dataPenalty)
+            await penalties.generarPenalidad(userDescribe.id)
+            penaltyIt= await penalties.getPenaltyByIdUser(userDescribe.id)
+            
+            dateUpdate = date.setFormatDateToExpect(penaltyIt.dateTo)
+          assert.equal("2022-11-27", dateUpdate, 'actualizado');
 
+    })  
+    after(async function () {
+        await deletePenalty(userDescribe.id)
+      }); 
+    })
+    describe('Actualizaciones de User con mas de 10 cantPenalty', async function () {
+        it('User con mas de 10 cantidad de penalidades, se requiere cambiar su status', async function () {
+        const DISABLE = 1;
+              
+              let dataPenalty = {
+                  "userId": userDescribe.id,
+                  "cantPenalty": 10,
+                  "dateTo": "2022-11-16"
+              }
+            await createPenalty(dataPenalty)
+            await penalties.generarPenalidad(userDescribe.id)
+            userUpdate = await user.getById(userDescribe.id)
+            userStatusAfter = userUpdate.statusId
+
+             
+              assert.equal(DISABLE, userStatusAfter, 'se actualiza el status de user a no habilitador');
+              
+  
+          })
+          after(async function () {
+             
+           await deletePenalty(userDescribe.id)
+          });
+        })
+    
     after(async function () {
         await deleteUser(userDescribe.id)
         await deletePenalty(userDescribe.id)
@@ -233,4 +277,4 @@ describe('Penalty', function () {
         await deleteRental(rentalDescribe.id)
     });
 
-}); // termina el describe de penalty general
+}); 
