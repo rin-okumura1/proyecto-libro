@@ -2,15 +2,12 @@ const {
     assert,
     expect
 } = require('chai')
-const request = require('supertest')
 const app = require('../app')
 var penalties = require('../src/repositories/penalty')
 var user = require('../src/repositories/users')
-var ren = require('../routes/rental')
 var date = require('../src/repositories/date')
 const {
     book,
-    Rental,
     Users,
     Penalty
 } = require("../db/models")
@@ -19,26 +16,6 @@ let uIdNow
 
 
 
-async function createRental(data) {
-
-    const {
-        userId,
-        bookId,
-        dateFrom,
-        dateToExpect,
-        dateToReal
-    } = data;
-
-    const newdRental = await Rental.create({
-        "userId": userId,
-        "bookId": bookId,
-        "dateFrom": dateFrom,
-        "dateToExpect": dateToExpect,
-        "dateToReal": dateToReal
-    });
-
-    return newdRental
-}
 
 async function createBook(data) {
     const {
@@ -123,14 +100,7 @@ async function deleteBook(i) {
     })
     
 }
-async function deleteRental(id) {
-    return await Rental.destroy({
-        where: {
-            "id": id
-        }
-    })
-   
-}
+
 
 
 
@@ -138,7 +108,7 @@ async function deleteRental(id) {
 describe('Penalty', function () {
     let userDescribe
     let bookDescribe
-    let rentalDescribe
+    
 
 
     before(async function () {
@@ -165,21 +135,6 @@ describe('Penalty', function () {
 
         }
         bookDescribe = await createBook(dataBook)
-
-
-
-        let dataRental = {
-            "userId": userDescribe.id,
-            "bookId": bookDescribe.id,
-            "dateFrom": "2022-11-09",
-            "dateToExpect": "2022-11-10",
-            "dateToReal": "2022-11-10"
-        }
-
-        rentalDescribe = await createRental(dataRental)
-
-
-
 
     })
     describe('Registrar primera penalidad', async function () {
@@ -274,7 +229,6 @@ describe('Penalty', function () {
         await deleteUser(userDescribe.id)
         await deletePenalty(userDescribe.id)
         await deleteBook(bookDescribe.id)
-        await deleteRental(rentalDescribe.id)
     });
 
 }); 
