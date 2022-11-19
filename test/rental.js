@@ -4,15 +4,17 @@ const {
 const request = require('supertest')
 const app = require('../app')
 const {
+    
     Penalty,
     book,
     Users,
-    Rental
 } = require("../db/models")
 
 var user =  require ('../src/repositories/users')
 var date = require ('../src/repositories/date')
 var bookRepo = require ('../src/repositories/books')
+var rentalRepo = require ('../src/repositories/Rental')
+
 
 
 
@@ -49,6 +51,8 @@ async function createPenalty(data) {
     return newdPenalty
 }
 
+
+
 async function deleteUser(i) {
     return await Users.destroy({
         where: {
@@ -58,8 +62,20 @@ async function deleteUser(i) {
    
 }
 
+
+
+
+
 async function deleteBook(i) {
     return await book.destroy({
+        where: {
+            "id": i
+        }
+    })
+}
+
+async function deletePenalty(i) {
+    return await Penalty.destroy({
         where: {
             "id": i
         }
@@ -70,12 +86,7 @@ async function deleteBook(i) {
 
 
 describe('Rental', function() {
-    let userDescribe
-    let userDescribeEnable
-    let bookDescribe
-    let bookDescribePrice
-    let bookNoAvailability 
-    let userDescribePenalty
+    let userDescribe, userDescribeEnable, bookDescribe,bookDescribePrice, bookNoAvailability, userDescribePenalty, rentalDescribeOk, bookDescribeOk,userDescribeOk, penaltyDescribe
     
     const NOTENABLE = 1
 
@@ -91,6 +102,14 @@ describe('Rental', function() {
         }
         userDescribe = await createUser(dataUser)
 
+        let dataUserOk = {
+            "name": "MariaOk",
+            "surname": "PerezOk",
+            "email": "mariaPerez@correo.com",
+            "password": "123456"
+        }
+        userDescribeOk = await createUser(dataUserOk)
+
         let dataUserPenalty = {
             "name": "Penalty",
             "surname": "Penalty",
@@ -104,11 +123,8 @@ describe('Rental', function() {
             "cantPenalty":5,
             "dateTo": "2022-11-30"
         } 
-        await createPenalty(penaltyData)
+        penaltyDescribe = await createPenalty(penaltyData)
         
-    
-       
-
         let dataUserEnable = {
             "name": "Usuario",
             "surname": "No habilitado",
@@ -118,68 +134,15 @@ describe('Rental', function() {
         userDescribeEnable = await createUser(dataUserEnable)
         await user.changeStatus(userDescribeEnable.id,NOTENABLE)
         
-
-        
-        let dataBookPrice = {
-
-            "authorId": 1,
-            "editionYear": 2018,
-            "title": "TestPrice",
-            "categoryId": 1,
-            "languageId": 1,
-            "synopsis": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. masa aeneana. Cum sociis natoque penatibus et",
-            "availabilityId": 1,
-            "userId": userDescribe.id,
-            "price":1000
-
-        }
-        bookDescribePrice=  await bookRepo.createBook(dataBookPrice)
-
-        
-
-        let dataBook = {
-
-            "authorId": 1,
-            "editionYear": 2018,
-            "title": "TestSinPrecio",
-            "categoryId": 1,
-            "languageId": 1,
-            "synopsis": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. masa aeneana. Cum sociis natoque penatibus et",
-            "availabilityId": 1,
-            "userId": userDescribe.id,
-            
-
-        }
-         bookDescribe = await bookRepo.createBook(dataBook)
-
-        
-
-
-     
-
-        let dataBookNoAvailability = {
-
-            "authorId": 1,
-            "editionYear": 2018,
-            "title": "TestNoDisponible",
-            "categoryId": 1,
-            "languageId": 1,
-            "synopsis": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. masa aeneana. Cum sociis natoque penatibus et",
-            "availabilityId": 2,
-            "userId": userDescribe.id,
-            "price":1000
-
-        }
-
-        bookNoAvailability = await bookRepo.createBook(dataBookNoAvailability)
+        bookDescribePrice=  await bookRepo.createBook(1,2018,"TestPrice",1,1,"Lorem ipsum dolor sit amet ..",userDescribe.id,1000)
+        bookDescribeOk=  await bookRepo.createBook(1,2018,"TestOk",1,1,"Lorem ipsum dolor sit amet ..",userDescribe.id,1000)
+        bookDescribe = await bookRepo.createBook(1,2018,"TestSinPrecio",1,1,"Lorem ipsum dolor sit amet ..",userDescribe.id)
+        bookNoAvailability = await bookRepo.createBook(1,2018,"TestNoDisponible",1,1,"Lorem ipsum dolor sit amet ..",userDescribe.id,1000)
         await bookRepo.changeAvailability(bookNoAvailability.id, 2)
-        
-        
-    
-        
-        
 
+        rentalDescribeOk = await rentalRepo.saveRental(userDescribeOk.id, bookDescribeOk.id, dateNow, "2022-11-30")
        
+        
         
     })
 
@@ -373,67 +336,83 @@ describe('Rental', function() {
         })
     }) 
 
-        
+       it('Se requiere que codigo 200 por registro exitoso', function(done) {
+  
+        request(app)
+            .post('/rental/')
+            .send(
+                 {
+                
+                     "userId":userDescribe.id,
+                        "bookId":bookDescribePrice.id,
+                        "dateFrom": dateNow,
+                        "dateToExpect":"2022-11-30"   
+                }
+            )
+            .expect(201,done)
+        })
 
-}) // finaliza primer describe
+}) 
 
 describe('Confirmar la devolucion de la renta', function() {
 
     it('Se requiere que el dateToReal no coincida con el dia actual', function(done) {
 
-        // request(app)
-        //     .put('/rental/43')
-        //     .send(
-        //         {
+        request(app)
+            .put('/rental/' + rentalDescribeOk.id)
+            .send(
+                {
                 
-        //             "dateToReal":"2022-11-15"
+                    "dateToReal":"2022-11-25"
                     
-        //           }
-        //     )
-        //     .expect(400)
-        //     .end(function(err, res) {
-        //         assert.equal(res.body.message, 'INVALID_DATE_TO_REAL')
-        //         if(err)  done(err);
-        //         return done();
-        //     })
+                  }
+            )
+            .expect(400)
+            .end(function(err, res) {
+                assert.equal(res.body.message, 'INVALID_DATE_TO_REAL')
+                if(err)  done(err);
+                return done();
+            })
         }) 
 
     //-----------------------------------------------------------------------------
     
-    skip.it('Se requiere que el dateToReal coincida con el dia actual', function(done) {
+    it('Se requiere que el dateToReal coincida con el dia actual', function(done) {
   
-        // request(app)
-        //     .put('/rental/43')
-        //     .send(
-        //         {
+        request(app)
+            .put('/rental/' + rentalDescribeOk.id)
+            .send(
+                {
                 
-        //             "dateToReal":"2022-11-15"
+                    "dateToReal":dateNow
                     
-        //           }
-        //     )
-        //     .expect(400)
-        //     .end(function(err, res) {
-        //         assert.equal(res.body.message, 'INVALID_DATE_TO_REAL')
-        //         if(err)  done(err);
-        //         return done();
-        //     })
-        // }) 
+                  }
+            )
+            .expect(201,done)
+        }) 
   
 
 
 }) 
-           
-}); // finaliza segundo describe
 
-afterEach(async function () {
+  afterEach(async function () {
+    
     await deleteUser(userDescribe.id)
-    //await deleteUser(userDescribeTwo.id)
     await deleteUser(userDescribeEnable.id)
+    await deleteUser(userDescribePenalty.id)
+    await deleteUser(userDescribeOk.id)
     await deleteBook(bookDescribe.id)
-    //await deleteBook(bookDescribeTwo.id)
-    await deleteBook(bookNoAvailability .id)
-   // await deleteExchange(bookDescribe.id)
-            }) // finaliza afteeach
+    await deleteBook(bookNoAvailability.id)
+    await deleteBook(bookDescribePrice.id)
+    await deleteBook(bookDescribeOk.id)
+    await deletePenalty(penaltyDescribe.id)
+
+   
+            }) 
+           
+}); 
 
 
-})  // finaliza describe ppal
+
+
+  

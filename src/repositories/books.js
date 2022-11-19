@@ -71,17 +71,10 @@ const getBookById = async (bookId) => {
 };
 
 //Crear o dar de alta un nuevo libro
-async function createBook (data) {
-    const {
-        authorId, 
-        editionYear, 
-        title, 
-        categoryId, 
-        languageId, 
-        synopsis, 
-        userId, 
-        price
-    } = data
+
+
+const createBook = async (authorId, editionYear, title, categoryId, languageId, synopsis, userId, price) => {
+    
      const createdBook = await book.create({
             authorId,
             editionYear,
@@ -99,26 +92,6 @@ async function createBook (data) {
     
     return createdBook;
 };
-
-// const createBook = async (authorId, editionYear, title, categoryId, languageId, synopsis, userId, price) => {
-    
-//      const createdBook = await book.create({
-//             authorId,
-//             editionYear,
-//             title,
-//             categoryId,
-//             languageId,
-//             synopsis,
-//             userId
-//         });
-
-//     if(price) {
-//         const { id } = createdBook;
-//         await setPriceToBook(id, price)
-//     };
-    
-//     return createdBook;
-// };
 
 //Actualiza los datos de un libro
 const updateBook = async (bookId, dataToModifyBook) => {
