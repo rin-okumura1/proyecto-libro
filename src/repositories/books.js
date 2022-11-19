@@ -71,7 +71,17 @@ const getBookById = async (bookId) => {
 };
 
 //Crear o dar de alta un nuevo libro
-const createBook = async (authorId, editionYear, title, categoryId, languageId, synopsis, userId, price) => {
+async function createBook (data) {
+    const {
+        authorId, 
+        editionYear, 
+        title, 
+        categoryId, 
+        languageId, 
+        synopsis, 
+        userId, 
+        price
+    } = data
      const createdBook = await book.create({
             authorId,
             editionYear,
@@ -89,6 +99,26 @@ const createBook = async (authorId, editionYear, title, categoryId, languageId, 
     
     return createdBook;
 };
+
+// const createBook = async (authorId, editionYear, title, categoryId, languageId, synopsis, userId, price) => {
+    
+//      const createdBook = await book.create({
+//             authorId,
+//             editionYear,
+//             title,
+//             categoryId,
+//             languageId,
+//             synopsis,
+//             userId
+//         });
+
+//     if(price) {
+//         const { id } = createdBook;
+//         await setPriceToBook(id, price)
+//     };
+    
+//     return createdBook;
+// };
 
 //Actualiza los datos de un libro
 const updateBook = async (bookId, dataToModifyBook) => {
@@ -166,7 +196,9 @@ const changeAvailability = async (bookId, availabilityId) =>{
         where: {
             id: bookId
         }
+
     });
+    
     if(bookFound) {
         return await book.update({
             availabilityId
