@@ -5,6 +5,9 @@ var users = require('../src/repositories/users')
 var books = require('../src/repositories/books')
 var date = require('../src/repositories/date');
 var penalties = require('../src/repositories/penalty')
+var rentalPrice = require('../src/repositories/rentalPrices')
+
+
 const AVAILABLE = 1
 const NOTAVAILABLE=2
 
@@ -64,13 +67,22 @@ dateNow=await date.getDateNow()
           return res.status(400).json({message:"BOOK_DON'T_AVAILABLE"})
         }
         
-        // si usuario  tiene fecha vigente de sancion
-        let penalty = await penalties.getById(req.body.userId)
-        let datePenalty = date.setFormatDateToExpect(penalty.dateTo)
-        if (datePenalty > dateNow){
-          return res.status(400).json({message:"PENALTY_VALID"})
+        if( (! await rentalPrice.getRentalPriceByIdBook(req.body.bookId))) { // si book es rentable
+          return res.status(400).json({message:"BOOK_IS_NOT_A_RENT"})
         }
+        
+       
+        // si usuario  tiene fecha vigente de sancion
 
+        let penalty = await penalties.getById(req.body.userId)
+        if (penalty){
+          let datePenalty = date.setFormatDateToExpect(penalty.dateTo)
+          if (datePenalty > dateNow){
+            return res.status(400).json({message:"PENALTY_VALID"})
+          }
+        }
+        
+            
           let saved = await Rental.saveRental(userId, bookId,dateFrom , dateToExpect);
           if (saved){  // si saved da true, hay que pedirle a status que cambie el estado de book
             books.changeAvailability(bookId,NOTAVAILABLE)
@@ -93,7 +105,7 @@ router.put('/:id', async function(req, res) {
   
   try {
     if(rental) {
-
+        
       if ( dateToReal != dateNow || !dateToReal) {  // que el dia ingrasado coincida con el dia actual
         return res.status(400).json({message:"INVALID_DATE_TO_REAL"})
       }
@@ -104,7 +116,6 @@ router.put('/:id', async function(req, res) {
           books.changeAvailability(rental.bookId,AVAILABLE)  // paso a disponible
           dateExpect= date.setFormatDateToExpect(rental.dateToExpect)
           result = await date.getDateNow() > dateExpect
-          
         if (result ){
           await penalties.generarPenalidad(userId)
         } 

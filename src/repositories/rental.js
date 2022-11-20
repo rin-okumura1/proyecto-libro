@@ -1,7 +1,7 @@
 const { Rental, book, Users, category } = require("../../db/models");
 const { Op } = require("sequelize");
 
-// Obtiene un registro de libro alquilado
+
 async function getById(RentalId) {
   return await Rental.findOne({
     where: {
@@ -10,9 +10,9 @@ async function getById(RentalId) {
   });
 }
 
-// Obtiene todos los registros de libros alquilados
+
 async function getAll(params = {}) {
-  // Trae todos los registros de Rentals sin filtro
+ 
   let query = {
     where: {},
     attributes: {
@@ -30,7 +30,6 @@ async function getAll(params = {}) {
     ],
   };
 
-  // Trae todos los registros de Rentals filtrados por el ID de categoria del Libro: http://localhost:3000/rental?categoryId=4
   if (params.categoryId) {
     query = {
       attributes: { exclude: ["bookId", "userId", "UserId", "createdAt", "updatedAt"] },
@@ -54,7 +53,6 @@ async function getAll(params = {}) {
 }
 
 async function saveRental(userId, bookId,dateFrom , dateToExpect) {
-  console.log("entre al save");
   return await Rental.create({
     userId, 
     bookId,
@@ -66,7 +64,6 @@ async function saveRental(userId, bookId,dateFrom , dateToExpect) {
 
 async function updatedDateToReal (rentalId,dateToReal){
 
-  
   return await Rental.update(
     {
       dateToReal: dateToReal
@@ -86,5 +83,4 @@ module.exports = {
   getAll,
   saveRental,
   updatedDateToReal
- 
 };

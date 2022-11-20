@@ -14,7 +14,7 @@ var books = require('../src/repositories/books')
 
 /* GET home page. */
 router.get('/', async function(req, res, next) {
-  res.json(await exchange.getAll());
+  res.status(404).json(await exchange.getAll());
 });
 
 router.get('/:id', async function(req, res) {
@@ -37,7 +37,6 @@ router.post('/', async function (req, res, next) {
    
    dateNowExchange = await  dateNow.getDateNow()
  
- 
     try {
         if(data) {
          
@@ -45,14 +44,16 @@ router.post('/', async function (req, res, next) {
             throw new Error('BAD_REQUEST')
           }
           
-          if ( await users.isEqualUser(bookId1,bookId2)){
-            throw new Error('ERROR_SAME_USERS')
-          }
           // validar libro 1
           await dataValidation(bookId1)
 
           // validar libro 2 
           await dataValidation(bookId2)
+          
+          if ( await users.isEqualUser(bookId1,bookId2)){
+            throw new Error('ERROR_SAME_USERS')
+          }
+          
 
         
             let saved = await exchange.saveExchange(bookId1, bookId2, dateNowExchange);
@@ -81,7 +82,7 @@ router.post('/', async function (req, res, next) {
       throw new Error("BOOK_DON'T_AVAILABLE")
     }
     
-    if ( (! await  users.isEnable(bookFound.userId))) { // si esta disponible los usuario que intercambian
+    if ( (! await  users.isEnable(bookFound.userId))) { // si esta habilitado los usuario que intercambian
       throw new Error("USER_DON'T_ENABLE")
     }
     
