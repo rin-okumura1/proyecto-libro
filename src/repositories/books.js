@@ -67,7 +67,10 @@ const getBookById = async (bookId) => {
 };
 
 //Crear o dar de alta un nuevo libro
+
+
 const createBook = async (authorId, editionYear, title, categoryId, languageId, synopsis, userId, price) => {
+    
      const createdBook = await book.create({
             authorId,
             editionYear,
@@ -162,7 +165,9 @@ const changeAvailability = async (bookId, availabilityId) =>{
         where: {
             id: bookId
         }
+
     });
+    
     if(bookFound) {
         return await book.update({
             availabilityId
