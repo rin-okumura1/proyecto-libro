@@ -233,11 +233,11 @@ describe('Exchange', function () {
         })
 
        it('Requiere que los usuarios intervinientes se encuentren habilitados', async function () {
-
-        usersRepo.changeStatus(userDescribeEnable.id,NOTENABLE)
-        await updateBook(bookDescribeTwo.id,userDescribeEnable.id)    
         
-                return request(app)
+        await usersRepo.changeStatus(userDescribeEnable.id,NOTENABLE)
+        await updateBook(bookDescribeTwo.id,userDescribeEnable.id)    
+                
+        return request(app)
                 .post('/exchange')
                 .send({
                     "bookId1": bookDescribeTwo.id,
