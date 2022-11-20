@@ -52,7 +52,6 @@ async function createPenalty(data) {
 }
 
 
-
 async function deleteUser(i) {
     return await Users.destroy({
         where: {
@@ -61,9 +60,6 @@ async function deleteUser(i) {
     })
    
 }
-
-
-
 
 
 async function deleteBook(i) {
