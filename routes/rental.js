@@ -73,6 +73,7 @@ dateNow=await date.getDateNow()
         
        
         // si usuario  tiene fecha vigente de sancion
+
         let penalty = await penalties.getById(req.body.userId)
         if (penalty){
           let datePenalty = date.setFormatDateToExpect(penalty.dateTo)

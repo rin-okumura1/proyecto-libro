@@ -90,6 +90,8 @@ describe('Rental', function() {
 
         dateNow = await date.getDateNow()
 
+
+
         let dataUser = {
             "name": "Maria",
             "surname": "Perez",
@@ -120,6 +122,7 @@ describe('Rental', function() {
             "dateTo": "2022-11-30"
         } 
         penaltyDescribe = await createPenalty(penaltyData)
+        
         
         let dataUserEnable = {
             "name": "Usuario",
@@ -195,7 +198,7 @@ describe('Rental', function() {
 
         it (' Se requiere que el dateFrom sea menor del dia actual', function(done) {
 
-            console.log("data from menor al dia actual");
+            
             request(app)
                 .post('/rental')
                 .send(
@@ -266,7 +269,7 @@ describe('Rental', function() {
 
         it (' Se requiere que el libro no se encuentre disponible para rentar', function(done) {
          
-         console.log(bookNoAvailability);
+         
                request(app)
                 .post('/rental')
                 .send(
@@ -313,6 +316,7 @@ describe('Rental', function() {
         //-------------------------------------------------------------------------------------------------------------*
 
         it (' Se requiere que el usuario tenga penalidades con fecha vigente', function(done) {
+
             request(app)
                 .post('/rental')
                 .send(

@@ -11,10 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // Un User pertenece a un único statusId de la entidad Status
-      // Un user pertenece a un único statusId de la entidad Status
       User.belongsTo(models.Status);
 
-      // Un User puede tener muchos Books relacionados consigo mismo
+      // Un User tiene muchos Books
       User.hasMany(models.book);
 
       // un user tieene penalidades
@@ -22,10 +21,7 @@ module.exports = (sequelize, DataTypes) => {
 
       //  Un User puede tener muchos rentals
       User.hasMany(models.Rental);
-      ;
-
-      // Un user puede pertenecer a muchos Books relacionados consigo mismo
-      User.hasMany(models.book)
+      
     }
   }
   User.init({
