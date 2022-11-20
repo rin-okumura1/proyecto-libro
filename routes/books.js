@@ -6,7 +6,6 @@ var users = require('../src/repositories/users')
 var authors = require('../src/repositories/authors')
 var categories = require('../src/repositories/categories')
 var languages = require('../src/repositories/languages');
-//const { Error } = require("sequelize");
 
 async function bookValidation (dataBook) {
 
@@ -90,13 +89,13 @@ router.get('/:bookId', async (req, res) => {
     
     await books.getBookById(req.params.bookId)
     .then((data) => {
-        if(data) {
-            return res.json(data)
+        if(!data) {
+            throw new Error('NOT_FOUND')
         }
-        res.status(404).end()
+        return res.status(200).json(data)
     })
     .catch((error) => {
-        res.json(error)
+        res.status(404).json({message: error.message});
     })
     
 });
