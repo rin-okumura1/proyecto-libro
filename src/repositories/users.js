@@ -33,7 +33,6 @@ async function updateUser(userId, newDataUser) {
   await Users.update({
     name: newDataUser.name,
     surname: newDataUser.surname,
-    email: newDataUser.email,
     password: newDataUser.password,
 
   },
