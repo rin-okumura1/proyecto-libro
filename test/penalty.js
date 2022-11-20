@@ -106,8 +106,7 @@ async function deleteBook(i) {
 
 
 describe('Penalty', function () {
-    let userDescribe
-    let bookDescribe
+    let userDescribe, bookDescribe
     
 
 
