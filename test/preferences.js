@@ -183,7 +183,7 @@ describe("Preferences", function () {
                 .get('/preferences/categories/' + userId)
                 .expect(200)
                 .end(function (err, res) {
-                    assert.equal(res.body.categories[0].name, 'Ciencia ficción')
+                    assert.equal(res.body.categories[0].name, 'Poesia')
 
                     if (err) done(err);
                     return done();
