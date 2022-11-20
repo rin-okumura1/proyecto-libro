@@ -94,13 +94,7 @@ async function deleteExchange(bookId1) {
 
 describe('Exchange', function () {
 
-    let userDescribe
-    let userDescribeTwo
-    let userDescribeEnable
-    let bookDescribe
-    let bookDescribeTwo
-    let bookNoAvailability 
-    let exchangeDescribe
+    let userDescribe, userDescribeTwo, userDescribeEnable, bookDescribe, bookDescribeTwo, bookNoAvailability 
     const NOTENABLE = 1
 
 
