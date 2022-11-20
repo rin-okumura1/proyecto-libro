@@ -6,7 +6,7 @@ var users = require("../src/repositories/users")
 var regExp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
 async function basicDataValidate(dataNewUser) {
-  const { name, surname, email, password } = dataNewUser;
+  const { name, surname, password } = dataNewUser;
 
   if (!name || (name.length < 1 || name.length > 100)) { 
     throw new Error('BAD_NAME');
