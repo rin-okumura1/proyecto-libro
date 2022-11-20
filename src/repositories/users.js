@@ -1,5 +1,8 @@
 
-const { Users,Status } = require("../../db/models")
+const { Users,Status, book } = require("../../db/models")
+var books = require('./books')
+
+
 const ENABLE = 2;
 
 async function getAll() {
@@ -62,7 +65,6 @@ const isEnable = async (userId) => {
 }
 const changeStatus = async (userId, statusId) =>{
 
-  
   let userFound = await getById(userId)
 
   if(userFound) {
@@ -77,6 +79,14 @@ const changeStatus = async (userId, statusId) =>{
   };
 }
 
+const isEqualUser = async (bookId1,bookId2) => {
+  bookOne= await books.getBookById(bookId1)
+  bookTwo= await books.getBookById(bookId2)
+  
+  return  bookOne.userId == bookTwo.userId;
+}
+
+
 module.exports={
     getById,
     getAll,
@@ -85,4 +95,5 @@ module.exports={
     updateUser,
     isEnable,
     changeStatus,
+    isEqualUser,
 }
