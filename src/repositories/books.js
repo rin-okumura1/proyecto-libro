@@ -111,25 +111,23 @@ const updateBook = async (bookId, dataToModifyBook) => {
 
 //Setear el precio del libro, cuando el precio es informado
 const setPriceToBook = async (bookId, price) => {
-    const bookToRental = await rentalPrice.findOrCreate({
+    await rentalPrice.findOrCreate({
         where: {
             bookId
         },
         defaults: {
             price
         }
-    })
-    
-    if(bookToRental) {
-        return await rentalPrice.update({
-            price
-        },
-        {
-            where: {
-                bookId
-            }
-        })
-    };
+    });
+
+    return await rentalPrice.update({
+        price
+    },
+    {
+        where: {
+            bookId
+        }
+    });
 };
 
 //Verifica si el estado del libro es Disponible o No_Disponible

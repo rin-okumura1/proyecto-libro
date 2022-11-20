@@ -4,17 +4,13 @@ var Rental = require('../src/repositories/rental')
 var users = require('../src/repositories/users')
 var books = require('../src/repositories/books')
 var date = require('../src/repositories/date');
+
 var penalties = require('../src/repositories/penalty')
 var rentalPrice = require('../src/repositories/rentalPrices')
 
 
 const AVAILABLE = 1
 const NOTAVAILABLE=2
-
-
-
-
-
 
 /* GET home page. */
 router.get('/', async function(req, res, next) {

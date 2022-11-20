@@ -1,12 +1,10 @@
 
-const { Users,Status, book } = require("../../db/models")
 var books = require('./books')
-
-
 const ENABLE = 2;
+const { Users, Status, category, language, author } = require("../../db/models");
 
 async function getAll() {
-  return await Users.findAll({include:[Status]})
+  return await Users.findAll({ include: [Status] })
 }
 
 async function getById(userId) {
@@ -36,11 +34,11 @@ async function updateUser(userId, newDataUser) {
     password: newDataUser.password,
 
   },
-  {
-    where: {
-      id: userId
-    }
-  });
+    {
+      where: {
+        id: userId
+      }
+    });
   return await Users.findOne({
     where: {
       id: userId
@@ -62,22 +60,22 @@ const isEnable = async (userId) => {
   const {statusId} = userFound;
   return await statusId == ENABLE;
 }
+
 const changeStatus = async (userId, statusId) =>{
   
+  let userFound = await getById(userId)
 
-let userFound = await getById(userId)
 
-
-  if(userFound) {
-      return await Users.update({
-          statusId:statusId
-      },
-      {
-          where: {
-              id:userFound.id
-          }
-      })
-  };
+    if(userFound) {
+        return await Users.update({
+            statusId:statusId
+        },
+        {
+            where: {
+                id:userFound.id
+            }
+        })
+    };
 }
 
 const isEqualUser = async (bookId1,bookId2) => {
@@ -87,14 +85,49 @@ const isEqualUser = async (bookId1,bookId2) => {
   return  bookOne.userId == bookTwo.userId;
 }
 
+async function getByIdWithAuthors(userId) {
+  
+    return await Users.findByPk(userId, 
+    
+      ({
+        include:{model: author,  as: "authors"}
+      })
+  
+      )
+}
+async function getByIdWithLanguages(userId) {
+  return await Users.findByPk(userId, 
+    
+    ({
+     
+      include:{model: language,  as: "languages"}
+    })
 
-module.exports={
-    getById,
-    getAll,
-    existEmail,
-    saveUser,
-    updateUser,
-    isEnable,
-    changeStatus,
-    isEqualUser,
+    )
+}
+async function getByIdWithCategories(userId) {
+  return await Users.findByPk(userId, 
+    
+    ({
+     
+      include:{model: category,  as: "categories"}
+    })
+
+    )
+}
+
+module.exports = {
+  getById,
+  getAll,
+  existEmail,
+  saveUser,
+  updateUser,
+  getByIdWithAuthors,
+  getByIdWithLanguages,
+  getByIdWithCategories,
+  getById,
+  isEnable,
+  changeStatus,
+  isEqualUser,
+  
 }

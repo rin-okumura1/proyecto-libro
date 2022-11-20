@@ -1,14 +1,12 @@
 var express = require("express");
 var router = express.Router();
 
-const authors = require('../src/repositories/authors')
+const languages = require('../src/repositories/languages')
 
-// en todos los endpoints 'filter' puede ser categories, languages o authors
-//lectura de preferencias de usuario 
 router.get('/', async function (req, res, next) {
 
     try {
-        return await authors.getAll().then((data) => {
+        return await languages.getAll().then((data) => {
             res.json(data)
         })
 
@@ -16,7 +14,7 @@ router.get('/', async function (req, res, next) {
         console.log("error going to DB: " + error)
         res.status(500)
     }
-    res.status(400).json({ message: 'error reading preferences' })
+    res.status(400).json({ message: 'error reading languages' })
 });
 
 module.exports = router;

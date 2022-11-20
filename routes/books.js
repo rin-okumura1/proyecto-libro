@@ -137,6 +137,7 @@ router.put('/:bookId', async function (req, res, next) {
         }
         
         await bookValidation(dataToModifyBook);
+
         await nonEditableFieldValidate(dataToModifyBook);
 
         let updatedBook = await books.updateBook(bookId, dataToModifyBook);

@@ -16,8 +16,8 @@
     "mocha": "^10.1.0",
     "morgan": "~1.9.1",
     "mysql2": "^2.3.3",
-    "sequelize": "^6.23.2",
-    "sequelize-cli": "^6.5.1",
+    "sequelize": "^6.25.3",
+    "sequelize-cli": "^6.5.2",
     "supertest": "^6.3.1"
   }
 }

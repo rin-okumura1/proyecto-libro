@@ -7,10 +7,14 @@ var logger = require('morgan');
 var indexRouter   = require('./routes/index');
 var penaltyRouter = require('./routes/penalty');
 var booksRouter   = require('./routes/books');
-var authorsRouter = require('./routes/authors');
 var exchangeRouter = require('./routes/exchange');
 var rentalRouter = require('./routes/rental');
-var usersRouter = require ('./routes/Users');
+var usersRouter = require('./routes/users');
+var preferencesRouter = require('./routes/preferences');
+var authorsRouter = require('./routes/authors');
+var languagesRouter = require('./routes/languages');
+var categoriesRouter = require('./routes/categories');
+
 var app = express();
 
 // view engine setup
@@ -27,11 +31,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/books', booksRouter);
-app.use('/authors', authorsRouter);
 app.use('/penalty', penaltyRouter);
 app.use('/exchange', exchangeRouter);
 app.use('/rental', rentalRouter);
-app.use('/Users', usersRouter);
+app.use('/users', usersRouter);
+app.use('/preferences', preferencesRouter);
+app.use('/authors', authorsRouter);
+app.use('/languages', languagesRouter);
+app.use('/categories', categoriesRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

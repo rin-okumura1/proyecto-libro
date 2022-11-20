@@ -1,9 +1,13 @@
-const { category } = require('../../db/models');
+const {category} = require('../../db/models')
+const { Op } = require('sequelize')
 
-const getCategoryById = async (id) => {
-    return await category.findByPk(id);
-};
 
-module.exports = {
-    getCategoryById
+async function existingCategory(categoriesName){
+    return await category.findOne(
+        { where: { name: categoriesName } }
+    )
+}
+
+module.exports={
+    existingCategory
 }
